@@ -7,8 +7,8 @@ import { ThemeService } from './theme.service';
   templateUrl: './theme-controller.component.html',
 })
 export class ThemeControllerComponent {
-  themeService = inject(ThemeService);
-  theme = computed(() => this.themeService.theme);
+  private readonly themeService = inject(ThemeService);
+  readonly theme = computed(() => this.themeService.theme());
 
   changeTheme() {
     if (this.theme() === 'dark') {

@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 export type Theme = 'dark' | 'light';
 
 @Injectable({
@@ -8,11 +8,10 @@ export type Theme = 'dark' | 'light';
 export class ThemeService {
   private readonly document = inject(DOCUMENT);
 
-  theme: Theme;
+  theme = signal<Theme>(this.getTheme() || 'dark');
 
   constructor() {
-    this.theme = this.getTheme() || 'dark';
-    this.setTheme(this.theme);
+    this.setTheme(this.theme());
   }
 
   getTheme(): Theme | null {
@@ -24,7 +23,7 @@ export class ThemeService {
   }
 
   setTheme(theme: Theme) {
-    this.theme = theme;
+    this.theme.set(theme);
     this.document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
     console.log(`Tema: ${theme}`);

@@ -16,6 +16,16 @@ export class InvoiceService {
 
   private cache = signal(new Map<number, Invoice[]>());
 
+  constructor() {
+    this.loadInitialPages();
+  }
+
+  private loadInitialPages(): void {
+    for (let page = 1; page <= 10; page++) {
+      this.getInvoiceByPage(page).subscribe();
+    }
+  }
+
   getInvoiceByPage(page: number): Observable<Invoice[]> {
     const accessToken =
       this.authService.getAuthTokenFromCookies()?.access_token;
@@ -42,21 +52,22 @@ export class InvoiceService {
         }),
         catchError((error) => {
           console.error(`Error al pedir página ${page}:`, error);
-          return of([]); // Devuelve array vacío si hay error
+          return of([]);
         })
       );
   }
 
-  getInvoicesByPageRange(startPage: number, endPage: number) {
+  getInvoicesByPageRange(
+    startPage: number,
+    endPage: number
+  ): Observable<Invoice[]> {
     const requests = [];
 
     for (let i = startPage; i <= endPage; i++) {
       requests.push(this.getInvoiceByPage(i));
     }
 
-    return forkJoin(requests).pipe(
-      map((arrays) => arrays.flat()) // Junta todas las páginas en un solo array
-    );
+    return forkJoin(requests).pipe(map((arrays) => arrays.flat()));
   }
 
   clearCache() {

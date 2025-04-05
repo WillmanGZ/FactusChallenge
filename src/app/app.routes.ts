@@ -18,6 +18,10 @@ export const routes: Routes = [
   {
     path: 'main',
     canActivate: [authGuard],
+    loadComponent: () =>
+      import('@main/layouts/main-layout/main-layout.component').then(
+        (m) => m.MainLayoutComponent
+      ),
     children: mainRoutes,
   },
   {

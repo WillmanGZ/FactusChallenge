@@ -42,10 +42,13 @@
     </table>
   </div>
 
-  <div class="join my-2 justify-center flex">
-    <button class="join-item btn" (click)="prevPage()">«</button>
-    <button class="join-item btn">Página {{ currentPage }}</button>
-    <button class="join-item btn" (click)="nextPage()">»</button>
+  <div class="join my-2 flex justify-between">
+    <div class="flex justify-center">
+      <button class="join-item btn" (click)="prevPage()">«</button>
+      <button class="join-item btn">Página {{ currentPage }}</button>
+      <button class="join-item btn" (click)="nextPage()">»</button>
+    </div>
+    <button class="btn rounded" (click)="refreshCache()">Actualizar datos</button>
   </div>
-  <button class="join-item btn" (click)="refreshCache()">Actualizar datos</button>
+
 </section>

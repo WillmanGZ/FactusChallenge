@@ -19,7 +19,13 @@
           <circle cx="12" cy="7" r="4"></circle>
         </g>
       </svg>
-      <input type="email" required placeholder="nombre@ejemplo.com" />
+      <input
+        #txtEmail
+        type="email"
+        required
+        placeholder="nombre@ejemplo.com"
+        (input)="email.set(txtEmail.value)"
+      />
     </label>
   </div>
 
@@ -45,10 +51,21 @@
           <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle>
         </g>
       </svg>
-      <input type="password" required placeholder="••••••••" />
+      <input
+        #txtPassword
+        type="password"
+        required
+        placeholder="••••••••"
+        (input)="password.set(txtPassword.value)"
+      />
     </label>
   </div>
 
   <!-- Submit Button -->
-  <button class="btn btn-primary mt-2 mb-0">Ingresar</button>
+  <button
+    class="btn btn-primary mt-2 mb-0"
+    (click)="login(email(), password())"
+  >
+    Ingresar
+  </button>
 </div>

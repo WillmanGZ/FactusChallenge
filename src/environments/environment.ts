@@ -2,8 +2,6 @@ export const environment = {
   production: false,
   grant_type: 'password',
   url_api: 'https://api-sandbox.factus.com.co',
-  email: 'sandbox@factus.com.co',
-  password: 'sandbox2024%',
   client_id: '9e9122f4-0d88-4406-871c-6a1ef2e4543d',
   client_secret: 'NUoBeBDuFrlXJ1TW794fduK78ipNRZQAcGWjDWFc',
 };

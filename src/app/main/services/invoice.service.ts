@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { catchError, forkJoin, map, of } from 'rxjs';
+import { catchError, forkJoin, map, Observable, of } from 'rxjs';
 import { environment } from '@environments/environment';
 import { Invoice, InvoiceResponse } from '@main/models/invoice.model';
+import { AuthService } from '@auth/services/auth.service';
 
 const API_URL = environment.url_api;
 
@@ -11,16 +12,26 @@ const API_URL = environment.url_api;
 })
 export class InvoiceService {
   private http = inject(HttpClient);
+  private authService = inject(AuthService);
+
   private cache = signal(new Map<number, Invoice[]>());
 
-  getInvoiceByPage(page: number) {
+  getInvoiceByPage(page: number): Observable<Invoice[]> {
+    const accessToken =
+      this.authService.getAuthTokenFromCookies()?.access_token;
+
+    const headers = {
+      Authorization: 'Bearer ' + accessToken,
+      'Content-Type': 'application/json',
+    };
+
     const currentCache = this.cache();
     if (currentCache.has(page)) {
       return of(currentCache.get(page)!);
     }
 
     return this.http
-      .get<InvoiceResponse>(`${API_URL}/v1/bills?page=${page}`)
+      .get<InvoiceResponse>(`${API_URL}/v1/bills?page=${page}`, { headers })
       .pipe(
         map((response) => {
           const invoices = response.data.data;

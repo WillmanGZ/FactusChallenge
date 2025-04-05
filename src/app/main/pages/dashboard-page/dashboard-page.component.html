@@ -1,50 +1,49 @@
-<div
-  class="overflow-x-auto rounded-box border border-base-content/10 bg-base-200"
->
-  <table class="table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Número</th>
-        <th>Cliente</th>
-        <th>Email</th>
-        <th>Total</th>
-        <th>Estado</th>
-      </tr>
-    </thead>
-    <tbody>
-      @if (invoices.length > 0) {
-        @for (invoice of invoices; track invoice.id) {
-          <tr>
-            <td>{{ invoice.id }}</td>
-            <td>{{ invoice.number }}</td>
-            <td>{{ invoice.names }}</td>
-            <td>{{ invoice.email }}</td>
-            <td>{{ invoice.total | currency:'COP ' }}</td>
-            <td>
-              <span
-                class="badge"
-                [class.badge-success]="invoice.status === 1"
-                [class.badge-error]="invoice.status !== 1"
-              >
-                {{ invoice.status === 1 ? 'Aprobado' : 'Rechazado' }}
-              </span>
-            </td>
-          </tr>
-        }
-      } @else {
+<section class="mx-4 mt-4">
+  <div
+    class="overflow-x-auto rounded-box border border-base-content/10 bg-base-200 overflow-y-scroll h-[25rem]"
+  >
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Número</th>
+          <th>Cliente</th>
+          <th>Email</th>
+          <th>Total</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (invoices.length > 0) { @for (invoice of invoices; track invoice.id)
+        {
+        <tr>
+          <td>{{ invoice.id }}</td>
+          <td>{{ invoice.number }}</td>
+          <td>{{ invoice.names }}</td>
+          <td>{{ invoice.email }}</td>
+          <td>{{ invoice.total | currency : "COP " }}</td>
+          <td>
+            <span
+              class="badge"
+              [class.badge-success]="invoice.status === 1"
+              [class.badge-error]="invoice.status !== 1"
+            >
+              {{ invoice.status === 1 ? "Aprobado" : "Rechazado" }}
+            </span>
+          </td>
+        </tr>
+        } } @else {
         <tr>
           <td colspan="6" class="text-center">No hay cotizaciones</td>
         </tr>
-      }
-    </tbody>
-  </table>
+        }
+      </tbody>
+    </table>
+  </div>
 
-
-</div>
-
-<div class="join mt-4 justify-center flex">
-  <button class="join-item btn" (click)="prevPage()">«</button>
-  <button class="join-item btn">Página {{ currentPage }}</button>
-  <button class="join-item btn" (click)="nextPage()">»</button>
-</div>
+  <div class="join mt-4 justify-center flex">
+    <button class="join-item btn" (click)="prevPage()">«</button>
+    <button class="join-item btn">Página {{ currentPage }}</button>
+    <button class="join-item btn" (click)="nextPage()">»</button>
+  </div>
+</section>

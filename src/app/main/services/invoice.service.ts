@@ -20,7 +20,7 @@ export class InvoiceService {
     this.loadInitialPages();
   }
 
-  private loadInitialPages(): void {
+  loadInitialPages(): void {
     for (let page = 1; page <= 10; page++) {
       this.getInvoiceByPage(page).subscribe();
     }

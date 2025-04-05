@@ -33,4 +33,10 @@ export class DashboardPageComponent implements OnInit {
   nextPage() {
     this.loadInvoices(this.currentPage + 1);
   }
+
+  refreshCache() {
+    this.invoiceService.clearCache();
+    this.invoiceService.loadInitialPages();
+    this.loadInvoices(1);
+  }
 }

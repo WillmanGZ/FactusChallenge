@@ -43,9 +43,8 @@ export class AuthService {
           this.setAuthTokensToCookies(token);
           console.log('Token Renovado');
         },
-        error: (err) => {
+        error: () => {
           this.logOut();
-          console.error('Error al renovar el token:', err);
         },
       });
     }, 4.95 * 60 * 1000); // cada 4 min 57 seg

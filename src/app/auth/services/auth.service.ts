@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 import { environment } from '@environments/environment';
-import { AuthTokenResponse } from '@auth/models/auth-token-response.model';
+import { AuthToken } from '@auth/models/auth-token.model';
 
 const API_URL = environment.url_api + '/oauth/token';
 const HEADERS = new HttpHeaders({
@@ -13,6 +14,11 @@ const HEADERS = new HttpHeaders({
 })
 export class AuthService {
   private http = inject(HttpClient);
+  private cookies = inject(CookieService);
+
+  constructor() {
+    this.deleteAuthTokenFromCookies();
+  }
 
   getTokens(email: string, password: string) {
     const BODY = {
@@ -23,8 +29,33 @@ export class AuthService {
       password: password,
     };
 
-    return this.http.post<AuthTokenResponse>(API_URL, BODY, {
+    return this.http.post<AuthToken>(API_URL, BODY, {
       headers: HEADERS,
     });
+  }
+
+  setAuthTokensToCookies(authToken: AuthToken) {
+    const stringValue = JSON.stringify(authToken);
+    this.cookies.set('AuthToken', stringValue, {
+      expires: 1,
+      path: '/',
+      secure: false, // ! FALSE MIENTRAS TRABAJAMOS EN LOCALHOST
+      sameSite: 'Lax',
+    });
+  }
+
+  getAuthTokenFromCookies(): AuthToken | null {
+    const value = this.cookies.get('AuthToken');
+    if (!value) return null;
+
+    try {
+      return JSON.parse(value) as AuthToken;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  deleteAuthTokenFromCookies() {
+    this.cookies.delete('AuthToken', '/');
   }
 }

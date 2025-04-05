@@ -14,8 +14,12 @@ export class LoginFormComponent {
   password = signal<string>('');
 
   login(email: string, password: string) {
-    this.authService.getTokens(email.trim(), password.trim()).subscribe(
+    email = email.trim();
+    password = password.trim();
+
+    this.authService.getTokens(email, password).subscribe(
       (response) => {
+        this.authService.setAuthTokensToCookies(response);
         this.toastService.success(
           'Has accedido correctamente',
           'Inicio de sesión exitoso'
@@ -44,4 +48,6 @@ export class LoginFormComponent {
       }
     );
   }
+
+  saveInCookies() {}
 }

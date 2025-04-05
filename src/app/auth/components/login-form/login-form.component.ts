@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '@auth/services/auth.service';
 import { ToastService } from '@shared/services/toast.service';
 
@@ -8,10 +9,12 @@ import { ToastService } from '@shared/services/toast.service';
 })
 export class LoginFormComponent {
   private authService = inject(AuthService);
+  private router = inject(Router);
   private toastService = inject(ToastService);
 
   email = signal<string>('');
   password = signal<string>('');
+
 
   login(email: string, password: string) {
     email = email.trim();
@@ -20,31 +23,16 @@ export class LoginFormComponent {
     this.authService.getTokens(email, password).subscribe(
       (response) => {
         this.authService.setAuthTokensToCookies(response);
-        this.toastService.success(
-          'Has accedido correctamente',
-          'Inicio de sesión exitoso'
-        );
+        this.router.navigate(['/main']);
+        this.toastService.success('Bienvenido', 'Inicio de sesión exitoso');
       },
       (error) => {
         const statusCode = error.status;
-        let message = 'Ha ocurrido un error inesperado';
-
-        switch (statusCode) {
-          case 401:
-            message = 'Usuario o contraseña incorrectos';
-            break;
-          case 400:
-            message = 'Usuario o contraseña incorrectos';
-            break;
-          case 404:
-            message = 'El usuario no existe';
-            break;
-          default:
-            message = error.error?.message || message;
-            break;
-        }
-
-        this.toastService.error(message, '');
+        console.log('Error code: ', statusCode);
+        this.toastService.error(
+          'Error al iniciar sesión',
+          'Credenciales invalidas'
+        );
       }
     );
   }

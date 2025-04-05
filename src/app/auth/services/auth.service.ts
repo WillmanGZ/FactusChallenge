@@ -23,6 +23,8 @@ export class AuthService {
       password: password,
     };
 
-    return this.http.post<AuthTokenResponse>(API_URL, BODY, { headers: HEADERS });
+    return this.http.post<AuthTokenResponse>(API_URL, BODY, {
+      headers: HEADERS,
+    });
   }
 }

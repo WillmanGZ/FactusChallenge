@@ -16,8 +16,9 @@ export class AuthService {
   private http = inject(HttpClient);
   private cookies = inject(CookieService);
 
-  constructor() {
-    this.deleteAuthTokenFromCookies();
+  isAuthenticated(): boolean {
+    const token = this.getAuthTokenFromCookies();
+    return !!token;
   }
 
   getTokens(email: string, password: string) {

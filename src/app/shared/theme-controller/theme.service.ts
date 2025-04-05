@@ -26,6 +26,5 @@ export class ThemeService {
     this.theme.set(theme);
     this.document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
-    console.log(`Tema: ${theme}`);
   }
 }

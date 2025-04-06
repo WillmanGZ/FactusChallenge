@@ -1,7 +1,7 @@
-<section class="mx-4 mt-4">
+<section class="mx-4">
   <h2 class="text-4xl font-bold text-center pb-4">Historial de Facturas</h2>
   <div
-    class="overflow-x-auto rounded-box border border-base-content/10 bg-base-200 overflow-y-scroll h-[28rem]"
+    class="overflow-x-auto rounded-box border border-base-content/10 bg-base-200 overflow-y-scroll h-[26rem]"
   >
     <table class="table w-[72rem]">
       <thead>
@@ -46,11 +46,11 @@
     </table>
   </div>
 
-  <div class="join my-2 flex justify-between">
+  <div class="join mt-2 flex justify-between">
     <div class="flex justify-center">
-      <button class="join-item btn" (click)="prevPage()">«</button>
-      <button class="join-item btn">Página {{ currentPage }}</button>
-      <button class="join-item btn" (click)="nextPage()">»</button>
+      <button class="join-item btn bg-base-300" (click)="prevPage()">«</button>
+      <button class="join-item btn bg-base-300">Página {{ currentPage }}</button>
+      <button class="join-item btn bg-base-300" (click)="nextPage()">»</button>
     </div>
     <button class="btn btn-primary rounded" (click)="refreshCache()">
       Actualizar datos

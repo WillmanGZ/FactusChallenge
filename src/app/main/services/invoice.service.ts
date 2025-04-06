@@ -10,7 +10,6 @@ import {
   XMLInvoiceResponse,
 } from '@main/models/invoice.model';
 import { AuthService } from '@auth/services/auth.service';
-import { mapToInvoiceUrl } from '@main/mappers/invoiceInfo.mapper';
 
 const API_URL = environment.url_api;
 
@@ -94,8 +93,7 @@ export class InvoiceService {
         headers,
       })
       .pipe(
-        map(mapToInvoiceUrl),
-        map((invoiceUrl) => invoiceUrl.public_url)
+        map((response) => response.data.bill.qr)
       );
   }
 

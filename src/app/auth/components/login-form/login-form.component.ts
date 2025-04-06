@@ -22,7 +22,7 @@ export class LoginFormComponent {
     this.authService.getTokens(email, password).subscribe(
       (response) => {
         this.authService.setAuthTokensToCookies(response);
-        this.authService.refreshAccessToken(response);
+        this.authService.refreshAccessToken();
         this.router.navigate(['/main']);
         this.toastService.success('Bienvenido', 'Inicio de sesión exitoso');
       },

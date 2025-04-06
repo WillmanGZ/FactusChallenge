@@ -4,6 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { environment } from '@environments/environment';
 import { AuthToken } from '@auth/models/auth-token.model';
 import { Router } from '@angular/router';
+import { ToastService } from '../../shared/services/toast.service';
 
 const API_URL = environment.url_api + '/oauth/token';
 const HEADERS = new HttpHeaders({
@@ -17,13 +18,14 @@ export class AuthService {
   private http = inject(HttpClient);
   private cookies = inject(CookieService);
   private router = inject(Router);
+  private toastService = inject(ToastService);
 
   private refreshIntervalId: ReturnType<typeof setInterval> | null = null;
 
   constructor() {
     const token = this.getAuthTokenFromCookies();
     if (token != null) {
-      this.refreshAccessToken(token);
+      this.refreshAccessToken();
     }
   }
 
@@ -32,22 +34,31 @@ export class AuthService {
     return !!token;
   }
 
-  refreshAccessToken(authToken: AuthToken) {
+  refreshAccessToken() {
     if (this.refreshIntervalId) {
       clearInterval(this.refreshIntervalId);
     }
 
     this.refreshIntervalId = setInterval(() => {
-      this.getAccessToken(authToken).subscribe({
-        next: (token) => {
-          this.setAuthTokensToCookies(token);
+      const token = this.getAuthTokenFromCookies();
+      if (!token) {
+        return this.logOut();
+      }
+
+      this.getAccessToken(token).subscribe({
+        next: (newToken) => {
+          this.setAuthTokensToCookies(newToken);
           console.log('Token Renovado');
         },
         error: () => {
           this.logOut();
+          this.toastService.error(
+            'Sesión Expirada',
+            'Tu sesión ha caducado. Por favor, inicia sesión nuevamente para continuar'
+          );
         },
       });
-    }, 4.95 * 60 * 1000); // cada 4 min 57 seg
+    }, 5 * 60 * 1000);
   }
 
   getTokens(email: string, password: string) {
@@ -104,7 +115,7 @@ export class AuthService {
 
   logOut() {
     if (this.refreshIntervalId) {
-      clearInterval(this.refreshIntervalId); // ← importante
+      clearInterval(this.refreshIntervalId);
       this.refreshIntervalId = null;
     }
 

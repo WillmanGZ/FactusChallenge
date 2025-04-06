@@ -3,7 +3,7 @@
   <div
     class="overflow-x-auto rounded-box border border-base-content/10 bg-base-200 overflow-y-scroll h-[28rem]"
   >
-    <table class="table w-[65rem]">
+    <table class="table w-[70rem]">
       <thead>
         <tr>
           <th>ID</th>
@@ -12,6 +12,7 @@
           <th>Email</th>
           <th>Total</th>
           <th>Estado</th>
+          <th>Ver factura</th>
         </tr>
       </thead>
       <tbody>
@@ -32,6 +33,9 @@
               {{ invoice.status === 1 ? "Aprobado" : "Rechazado" }}
             </span>
           </td>
+          <td>
+            <app-invoice [invoice]="invoice" />
+          </td>
         </tr>
         } } @else {
         <tr>
@@ -48,7 +52,8 @@
       <button class="join-item btn">Página {{ currentPage }}</button>
       <button class="join-item btn" (click)="nextPage()">»</button>
     </div>
-    <button class="btn btn-primary rounded" (click)="refreshCache()">Actualizar datos</button>
+    <button class="btn btn-primary rounded" (click)="refreshCache()">
+      Actualizar datos
+    </button>
   </div>
-
 </section>

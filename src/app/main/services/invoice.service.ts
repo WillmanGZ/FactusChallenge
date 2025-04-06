@@ -2,8 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { catchError, forkJoin, map, Observable, of } from 'rxjs';
 import { environment } from '@environments/environment';
-import { Invoice, InvoiceResponse } from '@main/models/invoice.model';
+import {
+  Invoice,
+  InvoiceResponse,
+  PDFInvoiceResponse,
+  WatchInvoice,
+  XMLInvoiceResponse,
+} from '@main/models/invoice.model';
 import { AuthService } from '@auth/services/auth.service';
+import { mapToInvoiceUrl } from '@main/mappers/invoiceInfo.mapper';
 
 const API_URL = environment.url_api;
 
@@ -27,13 +34,7 @@ export class InvoiceService {
   }
 
   getInvoiceByPage(page: number): Observable<Invoice[]> {
-    const accessToken =
-      this.authService.getAuthTokenFromCookies()?.access_token;
-
-    const headers = {
-      Authorization: 'Bearer ' + accessToken,
-      'Content-Type': 'application/json',
-    };
+    const headers = this.generateHeader();
 
     const currentCache = this.cache();
     if (currentCache.has(page)) {
@@ -70,7 +71,59 @@ export class InvoiceService {
     return forkJoin(requests).pipe(map((arrays) => arrays.flat()));
   }
 
+  generateHeader() {
+    const accessToken =
+      this.authService.getAuthTokenFromCookies()?.access_token;
+
+    return {
+      Authorization: 'Bearer ' + accessToken,
+      'Content-Type': 'application/json',
+    };
+  }
+
   clearCache() {
     this.cache.set(new Map());
+  }
+
+  getInvoiceURL(invoice: Invoice): Observable<string> {
+    const invoiceNumber = invoice.number;
+    const headers = this.generateHeader();
+
+    return this.http
+      .get<WatchInvoice>(`${API_URL}/v1/bills/show/${invoiceNumber}`, {
+        headers,
+      })
+      .pipe(
+        map(mapToInvoiceUrl),
+        map((invoiceUrl) => invoiceUrl.public_url)
+      );
+  }
+
+  getInvoicePDF(invoice: Invoice) {
+    const invoiceNumber = invoice.number;
+    const headers = this.generateHeader();
+
+    return this.http
+      .get<PDFInvoiceResponse>(
+        `${API_URL}/v1/bills/download-pdf/${invoiceNumber}`,
+        {
+          headers,
+        }
+      )
+      .pipe(map((response) => response.data));
+  }
+
+  getInvoiceXML(invoice: Invoice) {
+    const invoiceNumber = invoice.number;
+    const headers = this.generateHeader();
+
+    return this.http
+      .get<XMLInvoiceResponse>(
+        `${API_URL}/v1/bills/download-xml/${invoiceNumber}`,
+        {
+          headers,
+        }
+      )
+      .pipe(map((response) => response.data));
   }
 }

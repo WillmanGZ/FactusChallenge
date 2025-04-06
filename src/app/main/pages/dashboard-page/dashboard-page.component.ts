@@ -2,10 +2,11 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Invoice } from '@main/models/invoice.model';
 import { InvoiceService } from '../../services/invoice.service';
 import { CurrencyPipe } from '@angular/common';
+import { InvoiceComponent } from "../../components/invoice/invoice.component";
 
 @Component({
   selector: 'app-dashboard-page',
-  imports: [CurrencyPipe],
+  imports: [CurrencyPipe, InvoiceComponent],
   templateUrl: './dashboard-page.component.html',
 })
 export class DashboardPageComponent implements OnInit {

@@ -90,8 +90,11 @@ export class AuthService {
 
   setAuthTokensToCookies(authToken: AuthToken) {
     const stringValue = JSON.stringify(authToken);
+    const expireDate = new Date();
+    expireDate.setTime(expireDate.getTime() + 1 * 60 * 60 * 1000);
+
     this.cookies.set('AuthToken', stringValue, {
-      expires: 1,
+      expires: expireDate,
       path: '/',
       secure: false, // ! FALSE MIENTRAS TRABAJAMOS EN LOCALHOST
       sameSite: 'Lax',

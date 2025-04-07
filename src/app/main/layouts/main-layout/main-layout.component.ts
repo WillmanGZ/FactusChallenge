@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MainSidebarComponent } from '@main/components/MainSideBar/main-sidebar.component';
+import { MainSidebarComponent } from '@main/components/mainSidebar/main-sidebar.component';
 
 @Component({
   selector: 'app-main-page',

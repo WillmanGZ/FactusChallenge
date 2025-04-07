@@ -1,25 +1,12 @@
 <a
   (click)="toggleSidebar()"
-  class="absolute top-4 transition-all duration-300 z-50 cursor-pointer"
+  class="absolute top-4 transition-all duration-300 z-50 cursor-pointer flex items-center"
   [ngClass]="{
-    'left-4': !isSidebarOpen,
-    'left-48': isSidebarOpen
+    'left-2': !isSidebarOpen,
+    'left-46': isSidebarOpen
   }"
 >
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="h-9 w-9"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      d="M4 6h16M4 12h16M4 18h16"
-    />
-  </svg>
+  <menu-icon class="h-9 w-9" />
 </a>
 
 <aside
@@ -37,20 +24,7 @@
         [routerLink]="['/main/dashboard']"
         routerLinkActive="bg-base-300 font-semibold"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-9 w-9"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-          />
-        </svg>
+        <bar-chart-icon class="h-9 w-9" />
         <span
           [ngClass]="{
             'opacity-100': isSidebarOpen,
@@ -69,20 +43,7 @@
         [routerLink]="['/main/new-invoice']"
         routerLinkActive="bg-base-300 font-semibold"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-9 w-9"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 12h6m-3-3v6m3-13H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9l-6-6z"
-          />
-        </svg>
+        <file-plus-icon class="h-9 w-9" />
         <span
           [ngClass]="{
             'opacity-100': isSidebarOpen,

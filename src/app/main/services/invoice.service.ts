@@ -27,9 +27,17 @@ export class InvoiceService {
   }
 
   loadInitialPages(): void {
-    for (let page = 1; page <= 10; page++) {
-      this.getInvoiceByPage(page).subscribe();
-    }
+    this.getInvoiceByPage(1).subscribe();
+  }
+
+  private generateHeader() {
+    const accessToken =
+      this.authService.getAuthTokenFromCookies()?.access_token;
+
+    return {
+      Authorization: 'Bearer ' + accessToken,
+      'Content-Type': 'application/json',
+    };
   }
 
   getInvoiceByPage(page: number): Observable<Invoice[]> {
@@ -37,6 +45,25 @@ export class InvoiceService {
 
     const currentCache = this.cache();
     if (currentCache.has(page)) {
+      const nextPage = page + 1;
+      if (!currentCache.has(nextPage)) {
+        this.http
+          .get<InvoiceResponse>(`${API_URL}/v1/bills?page=${nextPage}`, {
+            headers,
+          })
+          .subscribe({
+            next: (nextResponse) => {
+              const nextInvoices = nextResponse.data.data;
+              const nextUpdatedCache = new Map(this.cache());
+              nextUpdatedCache.set(nextPage, nextInvoices);
+              this.cache.set(nextUpdatedCache);
+            },
+            error: (err) => {
+              console.warn(`No se pudo cachear la página ${nextPage}`, err);
+            },
+          });
+      }
+
       return of(currentCache.get(page)!);
     }
 
@@ -48,6 +75,26 @@ export class InvoiceService {
           const updatedCache = new Map(this.cache());
           updatedCache.set(page, invoices);
           this.cache.set(updatedCache);
+
+          const nextPage = page + 1;
+          if (!updatedCache.has(nextPage)) {
+            this.http
+              .get<InvoiceResponse>(`${API_URL}/v1/bills?page=${nextPage}`, {
+                headers,
+              })
+              .subscribe({
+                next: (nextResponse) => {
+                  const nextInvoices = nextResponse.data.data;
+                  const nextUpdatedCache = new Map(this.cache());
+                  nextUpdatedCache.set(nextPage, nextInvoices);
+                  this.cache.set(nextUpdatedCache);
+                },
+                error: (err) => {
+                  console.warn(`No se pudo cachear la página ${nextPage}`, err);
+                },
+              });
+          }
+
           return invoices;
         }),
         catchError((error) => {
@@ -55,33 +102,6 @@ export class InvoiceService {
           return of([]);
         })
       );
-  }
-
-  getInvoicesByPageRange(
-    startPage: number,
-    endPage: number
-  ): Observable<Invoice[]> {
-    const requests = [];
-
-    for (let i = startPage; i <= endPage; i++) {
-      requests.push(this.getInvoiceByPage(i));
-    }
-
-    return forkJoin(requests).pipe(map((arrays) => arrays.flat()));
-  }
-
-  generateHeader() {
-    const accessToken =
-      this.authService.getAuthTokenFromCookies()?.access_token;
-
-    return {
-      Authorization: 'Bearer ' + accessToken,
-      'Content-Type': 'application/json',
-    };
-  }
-
-  clearCache() {
-    this.cache.set(new Map());
   }
 
   getInvoiceURL(invoice: Invoice): Observable<string> {
@@ -92,9 +112,7 @@ export class InvoiceService {
       .get<WatchInvoice>(`${API_URL}/v1/bills/show/${invoiceNumber}`, {
         headers,
       })
-      .pipe(
-        map((response) => response.data.bill.qr)
-      );
+      .pipe(map((response) => response.data.bill.qr));
   }
 
   getInvoicePDF(invoice: Invoice) {
@@ -123,5 +141,9 @@ export class InvoiceService {
         }
       )
       .pipe(map((response) => response.data));
+  }
+
+  clearCache() {
+    this.cache.set(new Map());
   }
 }

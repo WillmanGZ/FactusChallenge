@@ -1,9 +1,11 @@
 import { Component, computed, inject } from '@angular/core';
 import { ThemeService } from './theme.service';
+import { SunIconComponent } from "../../icons/sun-icon.component";
+import { MoonIconComponent } from "../../icons/moon-icon.component";
 
 @Component({
   selector: 'app-theme-controller',
-  imports: [],
+  imports: [SunIconComponent, MoonIconComponent],
   templateUrl: './theme-controller.component.html',
 })
 export class ThemeControllerComponent {

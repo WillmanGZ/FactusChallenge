@@ -1,19 +1,10 @@
-import { Component, inject } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { MainSidebarComponent } from '@main/components/MainSideBar/main-sidebar.component';
 
 @Component({
   selector: 'app-main-page',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, MainSidebarComponent],
   templateUrl: './main-layout.component.html',
 })
-export class MainLayoutComponent {
-  private router = inject(Router);
-
-  dashboard() {
-    this.router.navigate(['/main/dashboard']);
-  }
-
-  newInvoice() {
-    this.router.navigate(['/main/new-invoice']);
-  }
-}
+export class MainLayoutComponent {}

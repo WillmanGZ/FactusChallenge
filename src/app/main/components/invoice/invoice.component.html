@@ -17,50 +17,19 @@
       <div class="flex flex-row justify-center items-center gap-4 mt-8">
         <!-- PDF Button -->
         <button class="btn btn-outline gap-2" (click)="downloadPDF()">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-5 h-5 text-red-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              d="M14 2H6a2 2 0 00-2 2v16c0 1.1.9 2 2 2h12a2 2 0 002-2V8l-6-6z"
-            />
-            <text x="9" y="16" font-size="6" fill="red">PDF</text>
-          </svg>
+          <pdf-icon class="w-5 h-5 text-red-500" />
           Descargar PDF
         </button>
 
         <!-- XML Button -->
         <button class="btn btn-outline gap-2" (click)="downloadXML()">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-5 h-5 text-blue-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              d="M14 2H6a2 2 0 00-2 2v16c0 1.1.9 2 2 2h12a2 2 0 002-2V8l-6-6z"
-            />
-            <text x="7" y="16" font-size="6" fill="blue">XML</text>
-          </svg>
+          <xml-icon class="w-5 h-5 text-blue-500" />
           Descargar XML
         </button>
 
         <!-- DIAN Button -->
         <a [href]="invoiceUrl" target="_blank" class="btn btn-outline gap-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-5 h-5 text-green-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path d="M10 14L21 3m0 0v7m0-7h-7" />
-            <path d="M21 13v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h7" />
-          </svg>
+          <link-icon class="w-5 h-5 text-green-500" />
           Ver en la DIAN
         </a>
       </div>

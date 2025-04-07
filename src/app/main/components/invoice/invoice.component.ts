@@ -10,10 +10,14 @@ import { Invoice } from '@main/models/invoice.model';
 import { InvoiceService } from '@main/services/invoice.service';
 import { ToastService } from '../../../shared/services/toast.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { PdfIconComponent } from "../../../icons/pdf-icon.component";
+import { XmlIconComponent } from "../../../icons/xml-icon.component";
+import { LinkIconComponent } from "../../../icons/link-icon.component";
 
 @Component({
   selector: 'app-invoice',
   templateUrl: './invoice.component.html',
+  imports: [PdfIconComponent, XmlIconComponent, LinkIconComponent],
 })
 export class InvoiceComponent implements AfterViewInit {
   private invoiceService = inject(InvoiceService);

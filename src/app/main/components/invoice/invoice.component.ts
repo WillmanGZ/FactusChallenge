@@ -10,9 +10,9 @@ import { Invoice } from '@main/models/invoice.model';
 import { InvoiceService } from '@main/services/invoice.service';
 import { ToastService } from '../../../shared/services/toast.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { PdfIconComponent } from "../../../icons/pdf-icon.component";
-import { XmlIconComponent } from "../../../icons/xml-icon.component";
-import { LinkIconComponent } from "../../../icons/link-icon.component";
+import { PdfIconComponent } from '../../../icons/pdf-icon.component';
+import { XmlIconComponent } from '../../../icons/xml-icon.component';
+import { LinkIconComponent } from '../../../icons/link-icon.component';
 
 @Component({
   selector: 'app-invoice',
@@ -38,6 +38,11 @@ export class InvoiceComponent implements AfterViewInit {
   }
 
   openModal(): void {
+    if (this.invoice().status !== 1) {
+      this.toastService.error('Error', 'La factura fue rechazada');
+      return;
+    }
+
     this.invoiceModal.nativeElement.showModal();
 
     this.invoiceService.getInvoiceURL(this.invoice()).subscribe({

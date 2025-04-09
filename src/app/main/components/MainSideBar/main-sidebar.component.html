@@ -8,7 +8,6 @@
 >
   <menu-icon class="h-9 w-9" />
 </a>
-
 <aside
   class="fixed top-0 left-0 h-screen transition-all duration-300 ease-in-out bg-base-100/80 backdrop-blur-sm shadow-lg border-r border-base-300 z-40 overflow-hidden"
   [ngClass]="{
@@ -17,7 +16,7 @@
   }"
 >
   @if (isSidebarOpen) {
-  <ul class="menu p-4 pt-16 rounded-box w-full">
+  <ul class="menu p-4 pt-16 rounded-box w-full h-full flex flex-col">
     <li>
       <a
         class="mt-2"
@@ -52,6 +51,21 @@
           class="transition-opacity duration-300 whitespace-nowrap"
         >
           Nueva factura
+        </span>
+      </a>
+    </li>
+
+    <li class="mt-auto">
+      <a class="mt-2" (click)="logOut()">
+        <logout-icon class="h-9 w-9 text-error" />
+        <span
+          [ngClass]="{
+            'opacity-100': isSidebarOpen,
+            'opacity-0': !isSidebarOpen
+          }"
+          class="transition-opacity duration-300 whitespace-nowrap"
+        >
+          Cerrar sesión
         </span>
       </a>
     </li>

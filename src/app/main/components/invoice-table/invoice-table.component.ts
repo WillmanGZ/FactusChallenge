@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Invoice } from '@main/models/invoice.model';
 import { InvoiceService } from '../../services/invoice.service';
 import { CurrencyPipe } from '@angular/common';
-import { InvoiceComponent } from "../../components/invoice/invoice.component";
+import { InvoiceComponent } from '../../components/invoice/invoice.component';
 
 @Component({
   selector: 'app-invoice-table',
@@ -40,4 +40,4 @@ export class InvoiceTableComponent {
     this.invoiceService.loadInitialPages();
     this.loadInvoices(1);
   }
- }
+}

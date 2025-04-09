@@ -15,7 +15,7 @@ export interface Customer {
   identification: string; //Numero de identificacion
   legal_organization_id: string; // ID que corresponsa al tipo de organizacion.
   tribute_id: string; // ID del tributo.
-  dv?: string; //Numero de identificacion en caso de ser NIT
+  dv?: string | null; //Numero de identificacion en caso de ser NIT
   company?: string; //Solo si es persona JURIDICA
   trade_name?: string;
   names?: string; //Solo para personas naturales

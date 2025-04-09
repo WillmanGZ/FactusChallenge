@@ -1,5 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Customer } from '@main/models/new-invoice.model';
 import { NewInvoiceService } from '@main/services/new-invoice.service';
 
 @Component({
@@ -34,13 +35,13 @@ export class NewInvoiceFormComponent {
     { id: '21', name: 'No aplica*' },
   ];
 
-  selected_identification_document_id = '3';
+  selected_identification_document_id = signal('3');
   selected_legal_organization_id = signal('2');
-  selected_tribute_id = '18';
+  selected_tribute_id = signal('18');
   selected_country_id = '';
   selected_municipality_id = '';
 
-  identification = '';
+  identification = signal('');
   dv = '';
   company = '';
   tradeName = '';
@@ -58,8 +59,51 @@ export class NewInvoiceFormComponent {
 
   hasNit() {
     return (
-      this.selected_identification_document_id === '6' ||
-      this.selected_identification_document_id === '10'
+      this.selected_identification_document_id() === '6' ||
+      this.selected_identification_document_id() === '10'
     );
+  }
+
+  try = computed(() => {
+    if (
+      this.selected_identification_document_id() !== '' &&
+      this.identification().length > 0 &&
+      this.selected_legal_organization_id() !== '' &&
+      this.selected_tribute_id() !== ''
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  });
+  ;
+
+  exportCustomer() {
+    const newCustomer: Customer = {
+      identification_document_id: Number(
+        this.selected_identification_document_id
+      ),
+      identification: this.identification(),
+      legal_organization_id: this.selected_legal_organization_id(),
+      tribute_id: this.selected_tribute_id(),
+      ...(this.tradeName ? { trade_name: this.tradeName } : {}),
+      ...(this.names ? { names: this.names } : {}),
+      ...(this.address ? { address: this.address } : {}),
+      ...(this.email ? { email: this.email } : {}),
+      ...(this.phone ? { phone: this.phone } : {}),
+    };
+
+    if (this.hasNit()) {
+      newCustomer.dv = this.dv;
+    }
+
+    if (this.isJuridicalPerson()) {
+      newCustomer.company = this.company;
+    }
+
+    if (this.selected_country_id === '46') {
+      newCustomer.municipality_id = this.selected_municipality_id;
+    }
+    console.table(newCustomer);
   }
 }

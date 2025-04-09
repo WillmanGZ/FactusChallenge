@@ -32,11 +32,11 @@
     </select>
 
     <label class="fieldset-label">Número de documento</label>
-    <input type="text" class="input" required />
+    <input type="text" class="input" [(ngModel)]="identification" required />
 
     @if(hasNit()){
     <label class="fieldset-label">Dígito de verificación</label>
-    <input type="text" class="input" required />
+    <input type="text" class="input" [(ngModel)]="dv" required />
     }
 
     <label class="fieldset-label">Tipo de organización</label>
@@ -66,24 +66,66 @@
       type="text"
       class="input"
       placeholder="Opcional para personas naturales"
+      [(ngModel)]="company"
       [required]="isJuridicalPerson()"
     />
 
     <label class="fieldset-label">Nombre comercial</label>
-    <input type="text" class="input" placeholder="Opcional" />
+    <input
+      type="text"
+      class="input"
+      placeholder="Opcional"
+      [(ngModel)]="tradeName"
+    />
 
     @if(!isJuridicalPerson()){
     <label class="fieldset-label">Nombre del cliente</label>
-    <input type="text" class="input" placeholder="Opcional" />
+    <input
+      type="text"
+      class="input"
+      placeholder="Opcional"
+      [(ngModel)]="names"
+    />
     }
 
     <label class="fieldset-label">Dirección del cliente</label>
-    <input type="text" class="input" placeholder="Opcional" />
+    <input
+      type="text"
+      class="input"
+      placeholder="Opcional"
+      [(ngModel)]="address"
+    />
 
     <label class="fieldset-label">Correo electrónico del cliente</label>
-    <input type="text" class="input" placeholder="Opcional" />
+    <input
+      type="text"
+      class="input"
+      placeholder="Opcional"
+      [(ngModel)]="email"
+    />
 
     <label class="fieldset-label">Número de teléfono del cliente</label>
-    <input type="tel" class="input" placeholder="Opcional" />
+    <input
+      type="tel"
+      class="input"
+      placeholder="Opcional"
+      [(ngModel)]="phone"
+    />
+
+    @if(countries().length > 0){
+    <label class="fieldset-label">País</label>
+    <select required class="select" [(ngModel)]="selected_country_id">
+      @for (country of countries(); track country.id) {
+      <option [value]="country.id">{{ country.name }}</option>
+      }
+    </select>
+    } @if(municipalities().length > 0 && selected_country_id === '46'){
+    <label class="fieldset-label">Municipio</label>
+    <select required class="select" [(ngModel)]="selected_municipality_id">
+      @for (muni of municipalities(); track muni.id) {
+      <option [value]="muni.id">{{ muni.name }}</option>
+      }
+    </select>
+    }
   </fieldset>
 </section>

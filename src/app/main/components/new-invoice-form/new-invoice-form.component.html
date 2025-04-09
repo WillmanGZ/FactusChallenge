@@ -1,0 +1,89 @@
+<section class="flex flex-row gap-4">
+  <fieldset
+    class="fieldset w-xs bg-base-200 border border-base-300 p-4 rounded-box"
+  >
+    <legend class="fieldset-legend">Detalles de factura</legend>
+
+    <label class="fieldset-label">Tipo de factura</label>
+    <select class="select">
+      <option selected>Factura de venta</option>
+      <option>Instrumento electrónico de transmisión</option>
+    </select>
+
+    <label class="fieldset-label">Observaciones</label>
+    <textarea class="textarea" placeholder="..."></textarea>
+  </fieldset>
+
+  <!--Customer-->
+  <fieldset
+    class="fieldset w-xs bg-base-200 border border-base-300 p-4 rounded-box"
+  >
+    <legend class="fieldset-legend">Detalles del cliente</legend>
+
+    <label class="fieldset-label">Tipo de documento</label>
+    <select
+      required
+      class="select"
+      [(ngModel)]="selected_identification_document_id"
+    >
+      @for (doc of identification_document_ids; track doc.id) {
+      <option [value]="doc.id">{{ doc.name }}</option>
+      }
+    </select>
+
+    <label class="fieldset-label">Número de documento</label>
+    <input type="text" class="input" required />
+
+    @if(hasNit()){
+    <label class="fieldset-label">Dígito de verificación</label>
+    <input type="text" class="input" required />
+    }
+
+    <label class="fieldset-label">Tipo de organización</label>
+    <select
+      #legalOrganizationSelect
+      required
+      class="select"
+      [ngModel]="selected_legal_organization_id()"
+      (change)="
+        selected_legal_organization_id.set(legalOrganizationSelect.value)
+      "
+    >
+      @for (org of legal_organization_ids; track org.id) {
+      <option [value]="org.id">{{ org.name }}</option>
+      }
+    </select>
+
+    <label class="fieldset-label">Tributo del cliente</label>
+    <select required class="select" [(ngModel)]="selected_tribute_id">
+      @for (tri of tribute_ids; track tri.id) {
+      <option [value]="tri.id">{{ tri.name }}</option>
+      }
+    </select>
+
+    <label class="fieldset-label">Nombre de la empresa</label>
+    <input
+      type="text"
+      class="input"
+      placeholder="Opcional para personas naturales"
+      [required]="isJuridicalPerson()"
+    />
+
+    <label class="fieldset-label">Nombre comercial</label>
+    <input type="text" class="input" placeholder="Opcional" />
+
+    @if(!isJuridicalPerson()){
+    <label class="fieldset-label">Nombre del cliente</label>
+    <input type="text" class="input" placeholder="Opcional" />
+    }
+
+    <label class="fieldset-label">Dirección del cliente</label>
+    <input type="text" class="input" placeholder="Opcional" />
+
+    <label class="fieldset-label">Correo electrónico del cliente</label>
+    <input type="text" class="input" placeholder="Opcional" />
+
+    <label class="fieldset-label">Número de teléfono del cliente</label>
+    <input type="tel" class="input" placeholder="Opcional" />
+  </fieldset>
+</section>

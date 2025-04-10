@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Customer } from '@main/models/new-invoice.model';
 import { NewInvoiceService } from '@main/services/new-invoice.service';
+import { ToastService } from '@shared/services/toast.service';
 
 @Component({
   selector: 'app-client-details-form',
@@ -9,6 +10,7 @@ import { NewInvoiceService } from '@main/services/new-invoice.service';
   templateUrl: './client-details-form.component.html',
 })
 export class ClientDetailsFormComponent {
+  private toastService = inject(ToastService);
   private newInvoiceService = inject(NewInvoiceService);
 
   readonly identification_document_ids = [
@@ -57,17 +59,10 @@ export class ClientDetailsFormComponent {
   countries = computed(() => this.newInvoiceService.countries());
   municipalities = computed(() => this.newInvoiceService.municipalities());
 
-  hasNit() {
-    return (
-      this.selected_identification_document_id() === '6' ||
-      this.selected_identification_document_id() === '10'
-    );
-  }
-
-  try = computed(() => {
+  isEnable = computed(() => {
     if (
       this.selected_identification_document_id() !== '' &&
-      this.identification().length > 0 &&
+      this.identification().length > 5 &&
       this.selected_legal_organization_id() !== '' &&
       this.selected_tribute_id() !== ''
     ) {
@@ -76,34 +71,145 @@ export class ClientDetailsFormComponent {
       return true;
     }
   });
-  ;
+
+  hasNit() {
+    return (
+      this.selected_identification_document_id() === '6' ||
+      this.selected_identification_document_id() === '10'
+    );
+  }
 
   exportCustomer() {
-    const newCustomer: Customer = {
-      identification_document_id: Number(
-        this.selected_identification_document_id()
-      ),
-      identification: this.identification(),
-      legal_organization_id: this.selected_legal_organization_id(),
-      tribute_id: this.selected_tribute_id(),
-      ...(this.tradeName ? { trade_name: this.tradeName } : {}),
-      ...(this.names ? { names: this.names } : {}),
-      ...(this.address ? { address: this.address } : {}),
-      ...(this.email ? { email: this.email } : {}),
-      ...(this.phone ? { phone: this.phone } : {}),
+    if (this.validations()) {
+      const newCustomer: Customer = {
+        identification_document_id: Number(
+          this.selected_identification_document_id()
+        ),
+        identification: this.identification(),
+        legal_organization_id: this.selected_legal_organization_id(),
+        tribute_id: this.selected_tribute_id(),
+        ...(this.tradeName ? { trade_name: this.tradeName } : {}),
+        ...(this.names ? { names: this.names } : {}),
+        ...(this.address ? { address: this.address } : {}),
+        ...(this.email ? { email: this.email } : {}),
+        ...(this.phone ? { phone: this.phone } : {}),
+      };
+
+      if (this.hasNit()) {
+        newCustomer.dv = this.dv;
+      }
+
+      if (this.isJuridicalPerson()) {
+        newCustomer.company = this.company;
+      }
+
+      if (this.selected_country_id === '46') {
+        newCustomer.municipality_id = this.selected_municipality_id;
+      }
+      console.table(newCustomer);
+    }
+  }
+
+  validations(): boolean {
+    // Validar el número de identificación: requerido, y debe ser entre 6 y 11 dígitos.
+    const idValue = this.identification().trim();
+    const regIdentification = /^\d{6,11}$/;
+    if (!idValue || !regIdentification.test(idValue)) {
+      this.toastService.error(
+        'Error',
+        'El documento de identidad debe tener entre 6 y 11 dígitos numéricos'
+      );
+      return false;
+    }
+
+    // Validar DV si el documento es NIT
+    if (this.hasNit()) {
+      const regDV = /^[0-9]$/;
+      if (!this.dv || !regDV.test(this.dv.trim())) {
+        this.toastService.error(
+          'Error',
+          'El dígito de verificación debe ser un número entre 0 y 9 (NIT)'
+        );
+        return false;
+      }
+    }
+
+    // Validar "company" si es persona jurídica.
+    if (this.isJuridicalPerson()) {
+      if (!this.company || this.company.trim().length === 0) {
+        this.toastService.error(
+          'Error',
+          'El nombre de la empresa es obligatorio para personas jurídicas'
+        );
+        return false;
+      }
+    }
+
+    // Validar email si se suministra (opcional).
+    if (this.email && this.email.trim().length > 0) {
+      const regEmail = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+      if (!regEmail.test(this.email.trim())) {
+        this.toastService.error('Error', 'El correo electrónico no es válido');
+        return false;
+      }
+    }
+
+    // Validar teléfono si se suministra (opcional).
+    if (this.phone && this.phone.trim().length > 0) {
+      const regPhone = /^[0-9()+\-\s]{7,15}$/;
+      if (!regPhone.test(this.phone.trim())) {
+        this.toastService.error('Error', 'El número de teléfono no es válido');
+        return false;
+      }
+    }
+
+    // Validar "tradeName", "names" y "address" si se ingresan, con longitudes entre 3 y 100 caracteres.
+    const validateOptionalField = (value: string): boolean => {
+      if (!value) return true;
+      const trimmed = value.trim();
+      return trimmed.length >= 3 && trimmed.length <= 100;
     };
 
-    if (this.hasNit()) {
-      newCustomer.dv = this.dv;
+    if (!validateOptionalField(this.tradeName)) {
+      this.toastService.error(
+        'Error',
+        'El nombre comercial debe tener entre 3 y 100 caracteres'
+      );
+      return false;
     }
 
-    if (this.isJuridicalPerson()) {
-      newCustomer.company = this.company;
+    if (!validateOptionalField(this.names)) {
+      this.toastService.error(
+        'Error',
+        'El nombre del cliente debe tener entre 3 y 100 caracteres'
+      );
+      return false;
     }
 
+    if (!validateOptionalField(this.address)) {
+      this.toastService.error(
+        'Error',
+        'La dirección debe tener entre 3 y 100 caracteres'
+      );
+      return false;
+    }
+
+    if (this.selected_country_id === '') {
+      this.toastService.error('Error', 'Debes seleccionar un país');
+      return false;
+    }
+
+    // Validar municipio si el país seleccionado es Colombia ('46').
     if (this.selected_country_id === '46') {
-      newCustomer.municipality_id = this.selected_municipality_id;
+      if (
+        !this.selected_municipality_id ||
+        this.selected_municipality_id.trim() === ''
+      ) {
+        this.toastService.error('Error', 'Debes seleccionar un municipio');
+        return false;
+      }
     }
-    console.table(newCustomer);
+
+    return true;
   }
 }

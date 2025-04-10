@@ -1,0 +1,85 @@
+<section>
+  <fieldset
+    class="fieldset w-full bg-base-200 border border-base-300 p-4 rounded-box flex flex-row gap-4 flex-wrap"
+  >
+    <legend class="fieldset-legend">
+      Detalles de los productos o servicios
+    </legend>
+    <div>
+      <label class="fieldset-label">Codigo de referencia</label>
+      <input
+        required
+        type="text"
+        class="input"
+        (ngModel)="(item_code_reference)"
+      />
+    </div>
+
+    <div>
+      <label class="fieldset-label">Nombre del producto</label>
+      <input required type="text" class="input" (ngModel)="(item_name)" />
+    </div>
+
+    <div>
+      <label class="fieldset-label">Cantidad</label>
+      <input required type="number" class="input" (ngModel)="(item_quantity)" />
+    </div>
+
+    <div>
+      <label class="fieldset-label">Precio</label>
+      <input required type="number" class="input" (ngModel)="(item_price)" />
+    </div>
+
+    <div>
+      <label class="fieldset-label">Porcentaje de descuento</label>
+      <input
+        required
+        type="number"
+        class="input"
+        (ngModel)="(item_discount_rate)"
+      />
+    </div>
+
+    <div>
+      <label class="fieldset-label">Porcentaje de impuesto</label>
+      <input required type="number" class="input" (ngModel)="(item_tax_rate)" />
+    </div>
+
+    <div>
+      <label class="fieldset-label">Unidad de medida</label>
+      <select required class="select" [ngModel]="item_unit_measure_id">
+        @for (unit of unitMeasures(); track unit.id) {
+        <option [value]="unit.id">{{ unit.name }}</option>
+        }
+      </select>
+    </div>
+
+    <div>
+      <label class="fieldset-label"
+        >Estándar de identificación del producto</label
+      >
+      <select required class="select" [ngModel]="item_standar_code_id">
+        @for (code of standar_code_ids; track code.id) {
+        <option [value]="code.id">{{ code.name }}</option>
+        }
+      </select>
+    </div>
+
+    <div>
+      <label class="fieldset-label">Excluído de IVA</label>
+      <select required class="select" [ngModel]="item_is_excluded">
+        <option value="0">No</option>
+        <option value="1">Si</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="fieldset-label">Tributo</label>
+      <select required class="select" [ngModel]="item_tribute_id">
+        @for (tribute of tributes(); track tribute.id) {
+        <option [value]="tribute.id">{{ tribute.name }}</option>
+        }
+      </select>
+    </div>
+  </fieldset>
+</section>

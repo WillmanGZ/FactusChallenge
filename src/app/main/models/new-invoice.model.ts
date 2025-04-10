@@ -29,8 +29,8 @@ export interface Item {
   code_reference: string;
   name: string;
   quantity: number;
-  discount_rate: number; //Porcentaje del descuento del producto o servicio (máximo dos decimales).
   price: number; //Precio del producto o servicio con impuestos incluidos (máximo dos decimales).
+  discount_rate: number; //Porcentaje del descuento del producto o servicio (máximo dos decimales).
   tax_rate: string; // Porcentaje del impuesto aplicado al producto o servicio.
   unit_measure_id: number; //ID que corresponda a la unidad de medida del item.
   standard_code_id: number; //ID que corresponde al codigo de estandar que se adopto para los productos o servicios.

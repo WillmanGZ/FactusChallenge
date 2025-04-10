@@ -7,6 +7,11 @@ import {
   Municipality,
 } from '../models/municipalities.model';
 import { Country, CountryResponse } from '@main/models/countries.model';
+import {
+  UnitMeasure,
+  UnitMeasureResponse,
+} from '@main/models/unit_measures.model';
+import { Tribute, TributesResponse } from '@main/models/tributes.model';
 
 const API_URL = environment.url_api;
 
@@ -20,9 +25,14 @@ export class NewInvoiceService {
   countries = signal<Country[]>([]);
   municipalities = signal<Municipality[]>([]);
 
+  unitMeasures = signal<UnitMeasure[]>([]);
+  tributes = signal<Tribute[]>([]);
+
   constructor() {
     this.getCountries();
     this.getMunicipalies();
+    this.getUnitMeasures();
+    this.getTributes();
   }
 
   private generateHeader() {
@@ -65,6 +75,40 @@ export class NewInvoiceService {
         },
         error: (err) => {
           console.warn('No se pudieron obtener los municipios', err);
+        },
+      });
+  }
+
+  private getUnitMeasures() {
+    const headers = this.generateHeader();
+
+    this.http
+      .get<UnitMeasureResponse>(`${API_URL}/v1/measurement-units`, {
+        headers,
+      })
+      .subscribe({
+        next: (response) => {
+          this.unitMeasures.set(response.data);
+        },
+        error: (err) => {
+          console.warn('No se pudieron obtener las unidades de medida', err);
+        },
+      });
+  }
+
+  private getTributes() {
+    const headers = this.generateHeader();
+
+    this.http
+      .get<TributesResponse>(`${API_URL}/v1/tributes/products`, {
+        headers,
+      })
+      .subscribe({
+        next: (response) => {
+          this.tributes.set(response.data);
+        },
+        error: (err) => {
+          console.warn('No se pudieron obtener los tributos', err);
         },
       });
   }

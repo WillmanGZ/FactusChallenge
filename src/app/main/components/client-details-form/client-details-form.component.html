@@ -182,17 +182,16 @@
       />
     </div>
 
-    @if(countries().length > 0){
     <div>
       <label class="fieldset-label">País</label>
-      <select required class="select" [(ngModel)]="selected_country_id">
+      <select required class="select min-w-48" [(ngModel)]="selected_country_id">
         @for (country of countries(); track country.id) {
         <option [value]="country.id">{{ country.name }}</option>
         }
       </select>
     </div>
 
-    } @if(municipalities().length > 0 && selected_country_id === '46'){
+    @if(selected_country_id === '46'){
     <div>
       <label class="fieldset-label">Municipio</label>
       <select required class="select" [(ngModel)]="selected_municipality_id">

@@ -81,7 +81,7 @@ export class ClientDetailsFormComponent {
   exportCustomer() {
     const newCustomer: Customer = {
       identification_document_id: Number(
-        this.selected_identification_document_id
+        this.selected_identification_document_id()
       ),
       identification: this.identification(),
       legal_organization_id: this.selected_legal_organization_id(),

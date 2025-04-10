@@ -3,6 +3,7 @@
     class="fieldset w-full bg-base-200 border border-base-300 p-4 rounded-box flex flex-row gap-4 flex-wrap"
   >
     <legend class="fieldset-legend">Detalles del cliente</legend>
+
     <div>
       <label class="fieldset-label">Tipo de documento</label>
       <select
@@ -18,34 +19,51 @@
     </div>
 
     <div>
-      <label class="fieldset-label">Número de documento</label>
+      <label class="fieldset-label validator">Número de documento</label>
       <input
+        #idInput="ngModel"
+        required
         type="text"
+        inputmode="numeric"
         class="input"
+        pattern="^\d{6,11}$"
+        minlength="6"
+        maxlength="11"
+        title="El número de documento debe tener entre 6 y 11 dígitos y solo contener números"
+        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+        [class.border-red-500]="idInput.invalid && idInput.touched"
         [ngModel]="identification()"
         (ngModelChange)="identification.set($event)"
-        required
       />
     </div>
 
     @if(hasNit()){
     <div>
       <label class="fieldset-label">Dígito de verificación</label>
-      <input type="text" class="input" [(ngModel)]="dv" required />
+      <input
+        #dvInput="ngModel"
+        required
+        class="input"
+        type="text"
+        inputmode="numeric"
+        pattern="^[0-9]$"
+        maxlength="1"
+        minlength="1"
+        title="El dígito de verificación debe ser un número entre 0 y 9"
+        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+        [class.border-red-500]="dvInput.invalid && dvInput.touched"
+        [(ngModel)]="dv"
+      />
     </div>
-
     }
 
     <div>
       <label class="fieldset-label">Tipo de organización</label>
       <select
-        #legalOrganizationSelect
         required
         class="select"
         [ngModel]="selected_legal_organization_id()"
-        (change)="
-          selected_legal_organization_id.set(legalOrganizationSelect.value)
-        "
+        (ngModelChange)="selected_legal_organization_id.set($event)"
       >
         @for (org of legal_organization_ids; track org.id) {
         <option [value]="org.id">{{ org.name }}</option>
@@ -70,21 +88,34 @@
     <div>
       <label class="fieldset-label">Nombre de la empresa</label>
       <input
+        #companyInput="ngModel"
+        [required]="isJuridicalPerson()"
         type="text"
         class="input"
         placeholder="Opcional para personas naturales"
+        pattern="^[a-zA-ZÁÉÍÓÚáéíóúÑñ0-9\s\.\,\-\&]{3,100}$"
+        title="El nombre de la empresa debe tener entre 3 y 100 caracteres, solo letras, números y símbolos como . , - &"
+        minlength="3"
+        maxlength="100"
         [(ngModel)]="company"
-        [required]="isJuridicalPerson()"
+        [class.border-red-500]="companyInput.invalid && companyInput.touched"
       />
     </div>
 
     <div>
       <label class="fieldset-label">Nombre comercial</label>
       <input
+        #companyInput="ngModel"
         type="text"
         class="input"
         placeholder="Opcional"
+        minlength="3"
+        maxlength="100"
+        pattern="^[a-zA-ZÀ-ÿ0-9\s\.,&\-()]+$"
+        title="Debe tener entre 3 y 100 caracteres. Solo letras, números y símbolos comunes como punto, coma, guion, paréntesis y &."
+        oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s\.,&\-()]/g, '')"
         [(ngModel)]="tradeName"
+        [class.border-red-500]="companyInput.invalid && companyInput.touched"
       />
     </div>
 
@@ -92,10 +123,18 @@
     <div>
       <label class="fieldset-label">Nombre del cliente</label>
       <input
-        type="text"
+        #namesInput="ngModel"
+        required
         class="input"
+        type="text"
         placeholder="Opcional"
+        minlength="3"
+        maxlength="100"
+        pattern="^[a-zA-ZÀ-ÿ\s]+$"
+        title="Solo letras y espacios. Entre 3 y 100 caracteres."
+        oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '')"
         [(ngModel)]="names"
+        [class.border-red-500]="namesInput.invalid && namesInput.touched"
       />
     </div>
 
@@ -107,6 +146,8 @@
         type="text"
         class="input"
         placeholder="Opcional"
+        pattern="^[a-zA-ZÀ-ÿ0-9\s#\-\.,]+$"
+        title="La dirección puede contener letras, números, espacios y caracteres como #, -, . o ,"
         [(ngModel)]="address"
       />
     </div>
@@ -114,20 +155,30 @@
     <div>
       <label class="fieldset-label">Correo electrónico del cliente</label>
       <input
-        type="text"
+        #emailInput="ngModel"
+        type="email"
         class="input"
         placeholder="Opcional"
+        pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+        title="Ingrese un correo electrónico válido"
+        oninput="this.value = this.value.replace(/\s/g, '')"
         [(ngModel)]="email"
+        [class.border-red-500]="emailInput.invalid && emailInput.touched"
       />
     </div>
 
     <div>
       <label class="fieldset-label">Número de teléfono del cliente</label>
       <input
+        #phoneInput="ngModel"
         type="tel"
         class="input"
         placeholder="Opcional"
+        pattern="^[0-9()+\-\s]{7,15}$"
+        title="El número de teléfono debe contener entre 7 y 15 caracteres, permitiendo dígitos, paréntesis, espacios, y los símbolos '+' o '-'"
+        oninput="this.value = this.value.replace(/[^0-9()+\-\s]/g, '')"
         [(ngModel)]="phone"
+        [class.border-red-500]="phoneInput.invalid && phoneInput.touched"
       />
     </div>
 

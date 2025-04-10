@@ -4,11 +4,11 @@ import { Customer } from '@main/models/new-invoice.model';
 import { NewInvoiceService } from '@main/services/new-invoice.service';
 
 @Component({
-  selector: 'app-new-invoice-form',
+  selector: 'app-client-details-form',
   imports: [FormsModule],
-  templateUrl: './new-invoice-form.component.html',
+  templateUrl: './client-details-form.component.html',
 })
-export class NewInvoiceFormComponent {
+export class ClientDetailsFormComponent {
   private newInvoiceService = inject(NewInvoiceService);
 
   readonly identification_document_ids = [

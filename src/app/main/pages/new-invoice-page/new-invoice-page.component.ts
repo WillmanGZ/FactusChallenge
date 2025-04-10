@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { NewInvoiceFormComponent } from "@main/components/new-invoice-form/new-invoice-form.component";
+import { ClientDetailsFormComponent } from "@main/components/client-details-form/client-details-form.component";
 
 @Component({
   selector: 'app-new-invoice-page',
-  imports: [NewInvoiceFormComponent],
+  imports: [ClientDetailsFormComponent],
   templateUrl: './new-invoice-page.component.html',
 })
 export class NewInvoicePageComponent { }

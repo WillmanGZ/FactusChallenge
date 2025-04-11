@@ -1,7 +1,11 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Customer } from '@main/models/new-invoice.model';
 import { NewInvoiceService } from '@main/services/new-invoice.service';
+import {
+  identification_document_ids,
+  legal_organization_ids,
+  tribute_ids,
+} from '@main/static/new-invoice.info';
 import { ToastService } from '@shared/services/toast.service';
 
 @Component({
@@ -13,29 +17,9 @@ export class ClientDetailsComponent {
   private toastService = inject(ToastService);
   private newInvoiceService = inject(NewInvoiceService);
 
-  readonly identification_document_ids = [
-    { id: '1', name: 'Registro civil' },
-    { id: '2', name: 'Tarjeta de identidad' },
-    { id: '3', name: 'Cédula de ciudadanía' },
-    { id: '4', name: 'Tarjeta de extranjería' },
-    { id: '5', name: 'Cédula de extranjería' },
-    { id: '6', name: 'NIT' },
-    { id: '7', name: 'Pasaporte' },
-    { id: '8', name: 'Documento de identificación extranjero' },
-    { id: '9', name: 'PEP' },
-    { id: '10', name: 'NIT otro país' },
-    { id: '11', name: 'NUIP*' },
-  ];
-
-  readonly legal_organization_ids = [
-    { id: '1', name: 'Persona Jurídica' },
-    { id: '2', name: 'Persona Natural' },
-  ];
-
-  readonly tribute_ids = [
-    { id: '18', name: 'IVA' },
-    { id: '21', name: 'No aplica*' },
-  ];
+  readonly identification_document_ids = identification_document_ids;
+  readonly legal_organization_ids = legal_organization_ids;
+  readonly tribute_ids = tribute_ids;
 
   identification_document_id = signal('3');
   identification = signal('');
@@ -66,7 +50,6 @@ export class ClientDetailsComponent {
   }
 
   validations(): boolean {
-    // Validar el número de identificación: requerido, y debe ser entre 6 y 11 dígitos.
     const idValue = this.identification().trim();
     const regIdentification = /^\d{6,11}$/;
     if (!idValue || !regIdentification.test(idValue)) {
@@ -77,7 +60,6 @@ export class ClientDetailsComponent {
       return false;
     }
 
-    // Validar DV si el documento es NIT
     if (this.hasNit()) {
       const regDV = /^[0-9]$/;
       if (!this.dv || !regDV.test(this.dv().trim())) {
@@ -89,7 +71,6 @@ export class ClientDetailsComponent {
       }
     }
 
-    // Validar "company" si es persona jurídica.
     if (this.isJuridicalPerson()) {
       if (!this.company || this.company().trim().length === 0) {
         this.toastService.error(
@@ -100,7 +81,6 @@ export class ClientDetailsComponent {
       }
     }
 
-    // Validar email si se suministra (opcional).
     if (this.email && this.email().trim().length > 0) {
       const regEmail = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
       if (!regEmail.test(this.email().trim())) {
@@ -109,7 +89,6 @@ export class ClientDetailsComponent {
       }
     }
 
-    // Validar teléfono si se suministra (opcional).
     if (this.phone && this.phone().trim().length > 0) {
       const regPhone = /^[0-9()+\-\s]{7,15}$/;
       if (!regPhone.test(this.phone().trim())) {
@@ -118,7 +97,6 @@ export class ClientDetailsComponent {
       }
     }
 
-    // Validar "tradeName", "names" y "address" si se ingresan, con longitudes entre 3 y 100 caracteres.
     const validateOptionalField = (value: string): boolean => {
       if (!value) return true;
       const trimmed = value.trim();
@@ -154,7 +132,6 @@ export class ClientDetailsComponent {
       return false;
     }
 
-    // Validar municipio si el país seleccionado es Colombia ('46').
     if (this.country_id() === '46') {
       if (!this.municipality_id() || this.municipality_id().trim() === '') {
         this.toastService.error('Error', 'Debes seleccionar un municipio');

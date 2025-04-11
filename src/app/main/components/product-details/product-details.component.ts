@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Item } from '@main/models/new-invoice.model';
 import { NewInvoiceService } from '@main/services/new-invoice.service';
+import { standar_code_ids } from '@main/static/new-invoice.info';
 import { ToastService } from '@shared/services/toast.service';
 
 @Component({
@@ -13,24 +14,7 @@ export class ProductDetailsComponent {
   private newInvoiceService = inject(NewInvoiceService);
   private toastService = inject(ToastService);
 
-  readonly standar_code_ids = [
-    {
-      id: '1',
-      name: 'Estándar de adopción del contribuyente',
-    },
-    {
-      id: '2',
-      name: 'UNSPSC',
-    },
-    {
-      id: '3',
-      name: 'Partida Arancelaria',
-    },
-    {
-      id: '4',
-      name: 'GTIN',
-    },
-  ];
+  readonly standar_code_ids = standar_code_ids;
 
   items = signal<Item[]>([]);
 

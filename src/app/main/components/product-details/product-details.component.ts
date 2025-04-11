@@ -1,7 +1,6 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Item, WithholdingTax } from '@main/models/new-invoice.model';
-import { UnitMeasure } from '@main/models/unit_measures.model';
+import { Item } from '@main/models/new-invoice.model';
 import { NewInvoiceService } from '@main/services/new-invoice.service';
 
 @Component({
@@ -31,19 +30,38 @@ export class ProductDetailsComponent {
     },
   ];
 
-  items: Item[] = [];
+  items = signal<Item[]>([]);
 
-  item_code_reference = '';
-  item_name = '';
-  item_quantity = 0;
-  item_price = 0.0;
-  item_discount_rate = 0;
-  item_tax_rate = '';
-  item_unit_measure_id = 0;
-  item_standar_code_id = 0;
-  item_is_excluded = 0;
-  item_tribute_id = 0;
+  item_code_reference = signal('');
+  item_name = signal('');
+  item_quantity = signal(1);
+  item_price = signal(0.0);
+  item_discount_rate = signal(0);
+  item_tax_rate = signal('');
+  item_unit_measure_id = signal(0);
+  item_standar_code_id = signal(0);
+  item_is_excluded = signal(1);
+  item_tribute_id = signal(0);
+  item_withholding_taxes = signal([]);
 
   unitMeasures = computed(() => this.newInvoiceService.unitMeasures());
   tributes = computed(() => this.newInvoiceService.tributes());
+
+  newItem() {
+    const newItem: Item = {
+      code_reference: this.item_code_reference(),
+      name: this.item_name(),
+      quantity: this.item_quantity(),
+      price: this.item_price(),
+      discount_rate: this.item_discount_rate(),
+      tax_rate: this.item_tax_rate(),
+      unit_measure_id: this.item_unit_measure_id(),
+      standard_code_id: this.item_standar_code_id(),
+      is_excluded: this.item_is_excluded(),
+      tribute_id: this.item_tribute_id(),
+      withholding_taxes: this.item_withholding_taxes(),
+    };
+
+    console.table(newItem);
+  }
 }

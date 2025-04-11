@@ -8,35 +8,44 @@
     <div>
       <label class="fieldset-label">Codigo de referencia</label>
       <input
+        #refInput="ngModel"
         required
         type="text"
         class="input"
         [ngModel]="item_code_reference()"
         (ngModelChange)="item_code_reference.set($event)"
+        [class.border-red-500]="refInput.invalid && refInput.touched"
       />
     </div>
 
     <div>
       <label class="fieldset-label">Nombre del producto</label>
       <input
+        #nameInput="ngModel"
         required
         type="text"
         class="input"
         [ngModel]="item_name()"
         (ngModelChange)="item_name.set($event)"
+        [class.border-red-500]="nameInput.invalid && nameInput.touched"
       />
     </div>
 
     <div>
       <label class="fieldset-label">Cantidad</label>
       <input
+        #quantityInput="ngModel"
         required
-        type="number"
+        type="text"
         class="input"
+        inputmode="numeric"
+        pattern="[0-9]*"
         min="1"
+        maxlength="5"
         oninput="this.value = this.value.replace(/[^0-9]/g, '')"
         [ngModel]="item_quantity()"
         (ngModelChange)="item_quantity.set($event)"
+        [class.border-red-500]="quantityInput.invalid && quantityInput.touched"
       />
     </div>
 
@@ -44,9 +53,12 @@
       <label class="fieldset-label">Precio</label>
       <input
         required
-        type="number"
+        type="text"
         class="input"
+        inputmode="numeric"
+        pattern="[0-9]*"
         min="0"
+        maxlength="10"
         oninput="this.value = this.value.replace(/[^0-9]/g, '')"
         [ngModel]="item_price()"
         (ngModelChange)="item_price.set($event)"
@@ -56,26 +68,34 @@
     <div>
       <label class="fieldset-label">Porcentaje de descuento</label>
       <input
+        #discountInput="ngModel"
         required
         type="number"
         class="input"
+        pattern="[0-9]*"
         min="0"
+        max="100"
         oninput="this.value = this.value.replace(/[^0-9]/g, '')"
         [ngModel]="item_discount_rate()"
         (ngModelChange)="item_discount_rate.set($event)"
+        [class.border-red-500]="discountInput.invalid && discountInput.touched"
       />
     </div>
 
     <div>
       <label class="fieldset-label">Porcentaje de impuesto</label>
       <input
+        #taxInput="ngModel"
         required
         type="number"
         class="input"
+        pattern="[0-9]*"
         min="1"
+        max="100"
         oninput="this.value = this.value.replace(/[^0-9]/g, '')"
         [ngModel]="item_tax_rate()"
         (ngModelChange)="item_tax_rate.set($event)"
+        [class.border-red-500]="taxInput.invalid && taxInput.touched"
       />
     </div>
 

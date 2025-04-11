@@ -49,28 +49,6 @@ export class ProductDetailsComponent {
   unitMeasures = computed(() => this.newInvoiceService.unitMeasures());
   tributes = computed(() => this.newInvoiceService.tributes());
 
-  newItem() {
-    if (!this.validations()) {
-      return;
-    }
-
-    const newItem: Item = {
-      code_reference: this.item_code_reference(),
-      name: this.item_name(),
-      quantity: this.item_quantity(),
-      price: this.item_price(),
-      discount_rate: this.item_discount_rate(),
-      tax_rate: this.item_tax_rate(),
-      unit_measure_id: this.item_unit_measure_id(),
-      standard_code_id: this.item_standar_code_id(),
-      is_excluded: this.item_is_excluded(),
-      tribute_id: this.item_tribute_id(),
-      withholding_taxes: this.item_withholding_taxes(),
-    };
-
-    console.table(newItem);
-  }
-
   validations(): boolean {
     const regNumeric = /^\d+$/;
 

@@ -5,11 +5,11 @@ import { NewInvoiceService } from '@main/services/new-invoice.service';
 import { ToastService } from '@shared/services/toast.service';
 
 @Component({
-  selector: 'app-client-details-form',
+  selector: 'app-client-details',
   imports: [FormsModule],
-  templateUrl: './client-details-form.component.html',
+  templateUrl: './client-details.component.html',
 })
-export class ClientDetailsFormComponent {
+export class ClientDetailsComponent {
   private toastService = inject(ToastService);
   private newInvoiceService = inject(NewInvoiceService);
 
@@ -37,77 +37,32 @@ export class ClientDetailsFormComponent {
     { id: '21', name: 'No aplica*' },
   ];
 
-  selected_identification_document_id = signal('3');
-  selected_legal_organization_id = signal('2');
-  selected_tribute_id = signal('18');
-  selected_country_id = signal('');
-  selected_municipality_id = signal('');
-
+  identification_document_id = signal('3');
   identification = signal('');
+  legal_organization_id = signal('2');
+  tribute_id = signal('18');
   dv = signal('');
   company = signal('');
-  tradeName = signal('');
+  trade_name = signal('');
   names = signal('');
   address = signal('');
+  municipality_id = signal('');
   email = signal('');
   phone = signal('');
+  country_id = signal('');
 
   isJuridicalPerson = computed(() => {
-    return this.selected_legal_organization_id() === '1';
+    return this.legal_organization_id() === '1';
   });
 
   countries = computed(() => this.newInvoiceService.countries());
   municipalities = computed(() => this.newInvoiceService.municipalities());
 
-  isEnable = computed(() => {
-    if (
-      this.selected_identification_document_id() !== '' &&
-      this.identification().length > 5 &&
-      this.selected_legal_organization_id() !== '' &&
-      this.selected_tribute_id() !== ''
-    ) {
-      return false;
-    } else {
-      return true;
-    }
-  });
-
   hasNit() {
     return (
-      this.selected_identification_document_id() === '6' ||
-      this.selected_identification_document_id() === '10'
+      this.identification_document_id() === '6' ||
+      this.identification_document_id() === '10'
     );
-  }
-
-  exportCustomer() {
-    if (this.validations()) {
-      const newCustomer: Customer = {
-        identification_document_id: Number(
-          this.selected_identification_document_id()
-        ),
-        identification: this.identification(),
-        legal_organization_id: this.selected_legal_organization_id(),
-        tribute_id: this.selected_tribute_id(),
-        ...(this.tradeName() ? { trade_name: this.tradeName() } : {}),
-        ...(this.names() ? { names: this.names() } : {}),
-        ...(this.address() ? { address: this.address() } : {}),
-        ...(this.email() ? { email: this.email() } : {}),
-        ...(this.phone() ? { phone: this.phone() } : {}),
-      };
-
-      if (this.hasNit()) {
-        newCustomer.dv = this.dv();
-      }
-
-      if (this.isJuridicalPerson()) {
-        newCustomer.company = this.company();
-      }
-
-      if (this.selected_country_id() === '46') {
-        newCustomer.municipality_id = this.selected_municipality_id();
-      }
-      console.table(newCustomer);
-    }
   }
 
   validations(): boolean {
@@ -170,7 +125,7 @@ export class ClientDetailsFormComponent {
       return trimmed.length >= 3 && trimmed.length <= 100;
     };
 
-    if (!validateOptionalField(this.tradeName())) {
+    if (!validateOptionalField(this.trade_name())) {
       this.toastService.error(
         'Error',
         'El nombre comercial debe tener entre 3 y 100 caracteres'
@@ -194,17 +149,14 @@ export class ClientDetailsFormComponent {
       return false;
     }
 
-    if (this.selected_country_id() === '') {
+    if (this.country_id() === '') {
       this.toastService.error('Error', 'Debes seleccionar un país');
       return false;
     }
 
     // Validar municipio si el país seleccionado es Colombia ('46').
-    if (this.selected_country_id() === '46') {
-      if (
-        !this.selected_municipality_id() ||
-        this.selected_municipality_id().trim() === ''
-      ) {
+    if (this.country_id() === '46') {
+      if (!this.municipality_id() || this.municipality_id().trim() === '') {
         this.toastService.error('Error', 'Debes seleccionar un municipio');
         return false;
       }

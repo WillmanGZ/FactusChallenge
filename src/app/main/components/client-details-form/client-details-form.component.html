@@ -53,6 +53,7 @@
         oninput="this.value = this.value.replace(/[^0-9]/g, '')"
         [class.border-red-500]="dvInput.invalid && dvInput.touched"
         [(ngModel)]="dv"
+        (ngModelChange)="dv.set($event)"
       />
     </div>
     }
@@ -97,7 +98,8 @@
         title="El nombre de la empresa debe tener entre 3 y 100 caracteres, solo letras, números y símbolos como . , - &"
         minlength="3"
         maxlength="100"
-        [(ngModel)]="company"
+        [ngModel]="company()"
+        (ngModelChange)="company.set($event)"
         [class.border-red-500]="companyInput.invalid && companyInput.touched"
       />
     </div>
@@ -114,7 +116,8 @@
         pattern="^[a-zA-ZÀ-ÿ0-9\s\.,&\-()]+$"
         title="Debe tener entre 3 y 100 caracteres. Solo letras, números y símbolos comunes como punto, coma, guion, paréntesis y &."
         oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ0-9\s\.,&\-()]/g, '')"
-        [(ngModel)]="tradeName"
+        [ngModel]="tradeName()"
+        (ngModelChange)="tradeName.set($event)"
         [class.border-red-500]="companyInput.invalid && companyInput.touched"
       />
     </div>
@@ -133,7 +136,8 @@
         pattern="^[a-zA-ZÀ-ÿ\s]+$"
         title="Solo letras y espacios. Entre 3 y 100 caracteres."
         oninput="this.value = this.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '')"
-        [(ngModel)]="names"
+        [ngModel]="names()"
+        (ngModelChange)="names.set($event)"
         [class.border-red-500]="namesInput.invalid && namesInput.touched"
       />
     </div>
@@ -148,7 +152,8 @@
         placeholder="Opcional"
         pattern="^[a-zA-ZÀ-ÿ0-9\s#\-\.,]+$"
         title="La dirección puede contener letras, números, espacios y caracteres como #, -, . o ,"
-        [(ngModel)]="address"
+        [ngModel]="address()"
+        (ngModelChange)="address.set($event)"
       />
     </div>
 
@@ -162,7 +167,8 @@
         pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
         title="Ingrese un correo electrónico válido"
         oninput="this.value = this.value.replace(/\s/g, '')"
-        [(ngModel)]="email"
+        [ngModel]="email()"
+        (ngModelChange)="email.set($event)"
         [class.border-red-500]="emailInput.invalid && emailInput.touched"
       />
     </div>
@@ -177,21 +183,27 @@
         pattern="^[0-9()+\-\s]{7,15}$"
         title="El número de teléfono debe contener entre 7 y 15 caracteres, permitiendo dígitos, paréntesis, espacios, y los símbolos '+' o '-'"
         oninput="this.value = this.value.replace(/[^0-9()+\-\s]/g, '')"
-        [(ngModel)]="phone"
+        [ngModel]="phone()"
+        (ngModelChange)="phone.set($event)"
         [class.border-red-500]="phoneInput.invalid && phoneInput.touched"
       />
     </div>
 
     <div>
       <label class="fieldset-label">País</label>
-      <select required class="select min-w-48" [(ngModel)]="selected_country_id">
+      <select
+        required
+        class="select min-w-48"
+        [ngModel]="selected_country_id()"
+        (ngModelChange)="selected_country_id.set($event)"
+      >
         @for (country of countries(); track country.id) {
         <option [value]="country.id">{{ country.name }}</option>
         }
       </select>
     </div>
 
-    @if(selected_country_id === '46'){
+    @if(selected_country_id() === '46'){
     <div>
       <label class="fieldset-label">Municipio</label>
       <select required class="select" [(ngModel)]="selected_municipality_id">

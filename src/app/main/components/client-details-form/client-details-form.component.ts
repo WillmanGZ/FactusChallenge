@@ -40,17 +40,17 @@ export class ClientDetailsFormComponent {
   selected_identification_document_id = signal('3');
   selected_legal_organization_id = signal('2');
   selected_tribute_id = signal('18');
-  selected_country_id = '';
-  selected_municipality_id = '';
+  selected_country_id = signal('');
+  selected_municipality_id = signal('');
 
   identification = signal('');
-  dv = '';
-  company = '';
-  tradeName = '';
-  names = '';
-  address = '';
-  email = '';
-  phone = '';
+  dv = signal('');
+  company = signal('');
+  tradeName = signal('');
+  names = signal('');
+  address = signal('');
+  email = signal('');
+  phone = signal('');
 
   isJuridicalPerson = computed(() => {
     return this.selected_legal_organization_id() === '1';
@@ -88,23 +88,23 @@ export class ClientDetailsFormComponent {
         identification: this.identification(),
         legal_organization_id: this.selected_legal_organization_id(),
         tribute_id: this.selected_tribute_id(),
-        ...(this.tradeName ? { trade_name: this.tradeName } : {}),
-        ...(this.names ? { names: this.names } : {}),
-        ...(this.address ? { address: this.address } : {}),
-        ...(this.email ? { email: this.email } : {}),
-        ...(this.phone ? { phone: this.phone } : {}),
+        ...(this.tradeName() ? { trade_name: this.tradeName() } : {}),
+        ...(this.names() ? { names: this.names() } : {}),
+        ...(this.address() ? { address: this.address() } : {}),
+        ...(this.email() ? { email: this.email() } : {}),
+        ...(this.phone() ? { phone: this.phone() } : {}),
       };
 
       if (this.hasNit()) {
-        newCustomer.dv = this.dv;
+        newCustomer.dv = this.dv();
       }
 
       if (this.isJuridicalPerson()) {
-        newCustomer.company = this.company;
+        newCustomer.company = this.company();
       }
 
-      if (this.selected_country_id === '46') {
-        newCustomer.municipality_id = this.selected_municipality_id;
+      if (this.selected_country_id() === '46') {
+        newCustomer.municipality_id = this.selected_municipality_id();
       }
       console.table(newCustomer);
     }
@@ -125,7 +125,7 @@ export class ClientDetailsFormComponent {
     // Validar DV si el documento es NIT
     if (this.hasNit()) {
       const regDV = /^[0-9]$/;
-      if (!this.dv || !regDV.test(this.dv.trim())) {
+      if (!this.dv || !regDV.test(this.dv().trim())) {
         this.toastService.error(
           'Error',
           'El dígito de verificación debe ser un número entre 0 y 9 (NIT)'
@@ -136,7 +136,7 @@ export class ClientDetailsFormComponent {
 
     // Validar "company" si es persona jurídica.
     if (this.isJuridicalPerson()) {
-      if (!this.company || this.company.trim().length === 0) {
+      if (!this.company || this.company().trim().length === 0) {
         this.toastService.error(
           'Error',
           'El nombre de la empresa es obligatorio para personas jurídicas'
@@ -146,18 +146,18 @@ export class ClientDetailsFormComponent {
     }
 
     // Validar email si se suministra (opcional).
-    if (this.email && this.email.trim().length > 0) {
+    if (this.email && this.email().trim().length > 0) {
       const regEmail = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-      if (!regEmail.test(this.email.trim())) {
+      if (!regEmail.test(this.email().trim())) {
         this.toastService.error('Error', 'El correo electrónico no es válido');
         return false;
       }
     }
 
     // Validar teléfono si se suministra (opcional).
-    if (this.phone && this.phone.trim().length > 0) {
+    if (this.phone && this.phone().trim().length > 0) {
       const regPhone = /^[0-9()+\-\s]{7,15}$/;
-      if (!regPhone.test(this.phone.trim())) {
+      if (!regPhone.test(this.phone().trim())) {
         this.toastService.error('Error', 'El número de teléfono no es válido');
         return false;
       }
@@ -170,7 +170,7 @@ export class ClientDetailsFormComponent {
       return trimmed.length >= 3 && trimmed.length <= 100;
     };
 
-    if (!validateOptionalField(this.tradeName)) {
+    if (!validateOptionalField(this.tradeName())) {
       this.toastService.error(
         'Error',
         'El nombre comercial debe tener entre 3 y 100 caracteres'
@@ -178,7 +178,7 @@ export class ClientDetailsFormComponent {
       return false;
     }
 
-    if (!validateOptionalField(this.names)) {
+    if (!validateOptionalField(this.names())) {
       this.toastService.error(
         'Error',
         'El nombre del cliente debe tener entre 3 y 100 caracteres'
@@ -186,7 +186,7 @@ export class ClientDetailsFormComponent {
       return false;
     }
 
-    if (!validateOptionalField(this.address)) {
+    if (!validateOptionalField(this.address())) {
       this.toastService.error(
         'Error',
         'La dirección debe tener entre 3 y 100 caracteres'
@@ -194,16 +194,16 @@ export class ClientDetailsFormComponent {
       return false;
     }
 
-    if (this.selected_country_id === '') {
+    if (this.selected_country_id() === '') {
       this.toastService.error('Error', 'Debes seleccionar un país');
       return false;
     }
 
     // Validar municipio si el país seleccionado es Colombia ('46').
-    if (this.selected_country_id === '46') {
+    if (this.selected_country_id() === '46') {
       if (
-        !this.selected_municipality_id ||
-        this.selected_municipality_id.trim() === ''
+        !this.selected_municipality_id() ||
+        this.selected_municipality_id().trim() === ''
       ) {
         this.toastService.error('Error', 'Debes seleccionar un municipio');
         return false;

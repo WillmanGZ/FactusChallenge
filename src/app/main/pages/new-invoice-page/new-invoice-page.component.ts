@@ -1,11 +1,16 @@
 import { Component, ViewChild, signal } from '@angular/core';
-import { ClientDetailsComponent } from '@main/components/client-details/client-details.component';
-import { ProductDetailsComponent } from '../../components/product-details/product-details.component';
 import { Customer, Item } from '@main/models/new-invoice.model';
+import { GeneralDetailsComponent } from '@main/components/general-details/general-details.component';
+import { ClientDetailsComponent } from '@main/components/client-details/client-details.component';
+import { ProductDetailsComponent } from '@main/components/product-details/product-details.component';
 
 @Component({
   selector: 'app-new-invoice-page',
-  imports: [ClientDetailsComponent, ProductDetailsComponent],
+  imports: [
+    GeneralDetailsComponent,
+    ClientDetailsComponent,
+    ProductDetailsComponent,
+  ],
   templateUrl: './new-invoice-page.component.html',
 })
 export class NewInvoicePageComponent {

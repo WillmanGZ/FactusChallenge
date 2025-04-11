@@ -12,6 +12,10 @@ import {
   UnitMeasureResponse,
 } from '@main/models/unit_measures.model';
 import { Tribute, TributesResponse } from '@main/models/tributes.model';
+import {
+  NumberingRange,
+  NumberingRangeResponse,
+} from '@main/models/numbering-range.model';
 
 const API_URL = environment.url_api;
 
@@ -22,6 +26,8 @@ export class NewInvoiceService {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
 
+  numberingRanges = signal<NumberingRange[]>([]);
+
   countries = signal<Country[]>([]);
   municipalities = signal<Municipality[]>([]);
 
@@ -29,6 +35,7 @@ export class NewInvoiceService {
   tributes = signal<Tribute[]>([]);
 
   constructor() {
+    this.getNumbericRanges();
     this.getCountries();
     this.getMunicipalies();
     this.getUnitMeasures();
@@ -45,6 +52,23 @@ export class NewInvoiceService {
     };
   }
 
+  private getNumbericRanges() {
+    const headers = this.generateHeader();
+
+    this.http
+      .get<NumberingRangeResponse>(`${API_URL}/v1/numbering-ranges`, {
+        headers,
+      })
+      .subscribe({
+        next: (response) => {
+          this.numberingRanges.set(response.data);
+        },
+        error: (err) => {
+          console.warn('No se pudieron obtener los municipios', err);
+        },
+      });
+  }
+
   private getCountries() {
     const headers = this.generateHeader();
 
@@ -57,7 +81,7 @@ export class NewInvoiceService {
           this.countries.set(response.data);
         },
         error: (err) => {
-          console.warn('No se pudieron obtener los municipios', err);
+          console.warn('No se pudieron obtener los rangos numericos', err);
         },
       });
   }

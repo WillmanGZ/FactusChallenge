@@ -1,0 +1,83 @@
+<section>
+  <fieldset
+    class="fieldset w-full bg-base-200 border border-base-300 p-4 rounded-box flex flex-row gap-4 flex-wrap"
+  >
+    <legend class="fieldset-legend">Datos generales de la factura</legend>
+
+    <div>
+      <label class="fieldset-label">Tipo de documento</label>
+      <select
+        required
+        class="select"
+        [ngModel]="document()"
+        (ngModelChange)="document.set($event)"
+      >
+        @for (doc of document_types; track doc.id) {
+        <option [value]="doc.id">{{ doc.name }}</option>
+        }
+      </select>
+    </div>
+
+    <div>
+      <label class="fieldset-label">Rango de numeración</label>
+      <select
+        required
+        class="select"
+        [ngModel]="numbering_range_id()"
+        (ngModelChange)="numbering_range_id.set($event)"
+      >
+        @for (range of numberingRanges(); track range.id) {
+        <option [value]="range.id">{{ range.prefix }}</option>
+        }
+      </select>
+    </div>
+
+    <div>
+      <label class="fieldset-label">Codigo de referencia</label>
+      <input
+        required
+        type="number"
+        class="input"
+        [ngModel]="reference_code()"
+        (ngModelChange)="reference_code.set($event)"
+      />
+    </div>
+
+    <div>
+      <label class="fieldset-label">Forma de pago</label>
+      <select
+        required
+        class="select"
+        [ngModel]="payment_form_code()"
+        (ngModelChange)="payment_form_code.set($event)"
+      >
+        @for (form of payment_forms; track form.id) {
+        <option [value]="form.id">{{ form.name }}</option>
+        }
+      </select>
+    </div>
+
+    <div>
+      <label class="fieldset-label">Metodo de pago</label>
+      <select
+        required
+        class="select"
+        [ngModel]="payment_method_code()"
+        (ngModelChange)="payment_method_code.set($event)"
+      >
+        @for (method of payment_methods; track method.id) {
+        <option [value]="method.id">{{ method.name }}</option>
+        }
+      </select>
+    </div>
+
+    <div>
+      <label class="fieldset-label">Observaciones</label>
+      <textarea
+        class="textarea"
+        [ngModel]="observation()"
+        (ngModelChange)="observation.set($event)"
+      ></textarea>
+    </div>
+  </fieldset>
+</section>

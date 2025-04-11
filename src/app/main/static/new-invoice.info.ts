@@ -1,3 +1,64 @@
+export const documents_types = [
+  {
+    id: '01',
+    name: 'Factura electrónica de venta',
+  },
+  {
+    id: '03',
+    name: 'Instrumento electrónico de transmisión - tipo 03',
+  },
+];
+
+export const payment_form = [
+  {
+    id: '1',
+    name: 'Pago de contado',
+  },
+  {
+    id: '2',
+    name: 'Pago a crédito',
+  },
+];
+
+export const payment_methods = [
+  {
+    id: '10',
+    name: 'Efectivo',
+  },
+  {
+    id: '42',
+    name: 'Consignación',
+  },
+  {
+    id: '20',
+    name: 'Cheque',
+  },
+  {
+    id: '47',
+    name: 'Transferencia',
+  },
+  {
+    id: '71',
+    name: 'Bonos',
+  },
+  {
+    id: '72',
+    name: 'Vales',
+  },
+  {
+    id: '1',
+    name: 'Medio de pago no definido',
+  },
+  {
+    id: '49',
+    name: 'Tarjeta Débito',
+  },
+  {
+    id: '48',
+    name: 'Tarjeta Crédito',
+  },
+];
+
 export const identification_document_ids = [
   { id: '1', name: 'Registro civil' },
   { id: '2', name: 'Tarjeta de identidad' },

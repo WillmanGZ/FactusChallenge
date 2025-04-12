@@ -1,8 +1,10 @@
-import { Component, ViewChild, signal } from '@angular/core';
+import { Component, ViewChild, inject, signal } from '@angular/core';
 import { Customer, Item } from '@main/models/new-invoice.model';
 import { GeneralDetailsComponent } from '@main/components/general-details/general-details.component';
 import { ClientDetailsComponent } from '@main/components/client-details/client-details.component';
 import { ProductDetailsComponent } from '@main/components/product-details/product-details.component';
+import { NewInvoice } from '@main/models/new-invoice.model';
+import { NewInvoiceService } from '@main/services/new-invoice.service';
 
 @Component({
   selector: 'app-new-invoice-page',
@@ -14,18 +16,42 @@ import { ProductDetailsComponent } from '@main/components/product-details/produc
   templateUrl: './new-invoice-page.component.html',
 })
 export class NewInvoicePageComponent {
+  @ViewChild(GeneralDetailsComponent) generalComp!: GeneralDetailsComponent;
   @ViewChild(ProductDetailsComponent) productComp!: ProductDetailsComponent;
   @ViewChild(ClientDetailsComponent)
   customerComp!: ClientDetailsComponent;
 
-  items = signal<Item[]>([]);
-  customers: Customer | null = null;
+  private newInvoiceService = inject(NewInvoiceService);
 
-  probar() {
+  items = signal<Item[]>([]);
+  customer: Customer | null = null;
+
+  sendNewInvoice() {
+    const generalValid = this.generalComp.validations();
+
+    if (!generalValid) {
+      return;
+    }
+
     if (!this.setCustomer()) {
       return;
     }
-    this.newProduct();
+
+    if (!this.newProduct()) {
+      return;
+    }
+
+    const newInvoice: NewInvoice = {
+      document: this.generalComp.document(),
+      numbering_range_id: this.generalComp.numbering_range_id(),
+      reference_code: this.generalComp.reference_code(),
+      observation: this.generalComp.observation(),
+      payment_form_code: this.generalComp.payment_form_code(),
+      payment_method_code: this.generalComp.payment_method_code(),
+      customer: this.customer!,
+      items: this.items(),
+    };
+    this.newInvoiceService.newInvoice(newInvoice);
   }
 
   setCustomer() {
@@ -59,7 +85,7 @@ export class NewInvoicePageComponent {
         : {}),
     };
 
-    this.customers = customer;
+    this.customer = customer;
     return true;
   }
 

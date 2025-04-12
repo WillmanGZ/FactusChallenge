@@ -12,6 +12,7 @@ import {
   UnitMeasureResponse,
 } from '@main/models/unit_measures.model';
 import { Tribute, TributesResponse } from '@main/models/tributes.model';
+import { NewInvoice } from '@main/models/new-invoice.model';
 import {
   NumberingRange,
   NumberingRangeResponse,
@@ -50,6 +51,21 @@ export class NewInvoiceService {
       Authorization: 'Bearer ' + accessToken,
       'Content-Type': 'application/json',
     };
+  }
+
+  newInvoice(newInvoice: NewInvoice) {
+    const headers = this.generateHeader();
+
+    this.http
+      .post(`${API_URL}/v1/bills/validate`, newInvoice, { headers })
+      .subscribe({
+        next: (response) => {
+          console.log('Validación exitosa:', response);
+        },
+        error: (error) => {
+          console.error('Error al validar la factura:', error);
+        },
+      });
   }
 
   private getNumbericRanges() {

@@ -35,11 +35,15 @@
     <div>
       <label class="fieldset-label">Codigo de referencia</label>
       <input
+        #refInput="ngModel"
         required
-        type="number"
+        type="text"
         class="input"
+        minlength="5"
+        maxlength="15"
         [ngModel]="reference_code()"
         (ngModelChange)="reference_code.set($event)"
+        [class.border-red-500]="refInput.invalid && refInput.touched"
       />
     </div>
 

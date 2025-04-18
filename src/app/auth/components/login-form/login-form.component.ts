@@ -1,9 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth/services/auth.service';
+import { PasswordIconComponent } from '@icons/password-icon.component';
+import { UserIconComponent } from '@icons/user-icon.component';
 import { ToastService } from '@shared/services/toast.service';
 
 @Component({
+  imports: [UserIconComponent, PasswordIconComponent],
   selector: 'app-login-form',
   templateUrl: './login-form.component.html',
 })

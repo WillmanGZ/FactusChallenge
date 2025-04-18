@@ -2,8 +2,8 @@
   (click)="toggleSidebar()"
   class="absolute top-4 transition-all duration-300 z-50 cursor-pointer flex items-center"
   [ngClass]="{
-    'left-2': !isSidebarOpen,
-    'left-46': isSidebarOpen
+    'left-2': !isSidebarOpen(),
+    'left-46': isSidebarOpen()
   }"
 >
   <menu-icon class="h-9 w-9" />
@@ -12,23 +12,23 @@
 <aside
   class="fixed top-0 left-0 h-screen transition-all duration-300 ease-in-out bg-base-100/80 backdrop-blur-sm shadow-lg border-r border-base-300 z-40 overflow-hidden"
   [ngClass]="{
-    'w-60': isSidebarOpen,
-    'w-0': !isSidebarOpen
+    'w-60': isSidebarOpen(),
+    'w-0': !isSidebarOpen()
   }"
 >
-  @if (isSidebarOpen) {
+  @if (isSidebarOpen()) {
   <ul class="menu p-4 pt-16 rounded-box w-full">
     <li>
       <a
         class="mt-2"
-        [routerLink]="['/main/dashboard']"
+        [routerLink]="['/main/invoice-history']"
         routerLinkActive="bg-base-300 font-semibold"
       >
         <bar-chart-icon class="h-9 w-9" />
         <span
           [ngClass]="{
-            'opacity-100': isSidebarOpen,
-            'opacity-0': !isSidebarOpen
+            'opacity-100': isSidebarOpen(),
+            'opacity-0': !isSidebarOpen()
           }"
           class="transition-opacity duration-300 whitespace-nowrap"
         >
@@ -46,8 +46,8 @@
         <file-plus-icon class="h-9 w-9" />
         <span
           [ngClass]="{
-            'opacity-100': isSidebarOpen,
-            'opacity-0': !isSidebarOpen
+            'opacity-100': isSidebarOpen(),
+            'opacity-0': !isSidebarOpen()
           }"
           class="transition-opacity duration-300 whitespace-nowrap"
         >

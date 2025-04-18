@@ -4,6 +4,6 @@ import { InvoiceTableComponent } from '@main/components/invoice-table/invoice-ta
 @Component({
   selector: 'app-dashboard-page',
   imports: [InvoiceTableComponent],
-  templateUrl: './dashboard-page.component.html',
+  templateUrl: './invoice-history-page.component.html',
 })
-export class DashboardPageComponent {}
+export class InvoiceHistoryPageComponent {}

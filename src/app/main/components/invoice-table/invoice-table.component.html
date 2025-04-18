@@ -16,8 +16,8 @@
         </tr>
       </thead>
       <tbody>
-        @if (invoices.length > 0) { @for (invoice of invoices; track invoice.id)
-        {
+        @if (invoices().length > 0) { @for (invoice of invoices(); track
+        invoice.id) {
         <tr>
           <td>{{ invoice.id }}</td>
           <td>{{ invoice.number }}</td>
@@ -50,7 +50,7 @@
     <div class="flex justify-center">
       <button class="join-item btn bg-base-300" (click)="prevPage()">«</button>
       <button class="join-item btn bg-base-300">
-        Página {{ currentPage }}
+        Página {{ currentPage() }}
       </button>
       <button class="join-item btn bg-base-300" (click)="nextPage()">»</button>
     </div>

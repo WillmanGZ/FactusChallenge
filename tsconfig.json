@@ -8,7 +8,8 @@
       "@environments/*": ["src/environments/*"],
       "@shared/*": ["src/app/shared/*"],
       "@auth/*": ["src/app/auth/*"],
-      "@main/*": ["src/app/main/*"]
+      "@main/*": ["src/app/main/*"],
+      "@icons/*": ["src/app/icons/*"]
     },
     "outDir": "./dist/out-tsc",
     "strict": true,

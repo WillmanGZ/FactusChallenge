@@ -4,7 +4,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { environment } from '@environments/environment';
 import { AuthToken } from '@auth/models/auth-token.model';
 import { Router } from '@angular/router';
-import { ToastService } from '../../shared/services/toast.service';
+import { ToastService } from '@shared/services/toast.service';
 
 const API_URL = environment.url_api + '/oauth/token';
 const HEADERS = new HttpHeaders({

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ThemeControllerComponent } from "../theme-controller/theme-controller.component";
+import { ThemeControllerComponent } from "@shared/components/theme-controller/theme-controller.component";
 
 @Component({
   selector: 'app-navbar',

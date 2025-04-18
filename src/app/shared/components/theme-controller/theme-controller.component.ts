@@ -1,7 +1,7 @@
 import { Component, computed, inject } from '@angular/core';
-import { ThemeService } from './theme.service';
-import { SunIconComponent } from "../../icons/sun-icon.component";
-import { MoonIconComponent } from "../../icons/moon-icon.component";
+import { ThemeService } from '@shared/services/theme.service';
+import { SunIconComponent } from "@icons/sun-icon.component";
+import { MoonIconComponent } from "@icons/moon-icon.component";
 
 @Component({
   selector: 'app-theme-controller',

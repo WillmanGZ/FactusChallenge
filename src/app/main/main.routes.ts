@@ -7,11 +7,11 @@ export const mainRoutes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'dashboard',
+    path: 'invoice-history',
     loadComponent: () =>
-      import('@main/pages/dashboard-page/dashboard-page.component').then(
-        (m) => m.DashboardPageComponent
-      ),
+      import(
+        '@main/pages/invoice-history-page/invoice-history-page.component'
+      ).then((m) => m.InvoiceHistoryPageComponent),
   },
   {
     path: 'new-invoice',
@@ -21,4 +21,3 @@ export const mainRoutes: Routes = [
       ),
   },
 ];
-

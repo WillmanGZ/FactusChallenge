@@ -6,7 +6,12 @@
 
     <div class="flex flex-col gap-1.5">
       <label class="label">Rango de numeración</label>
-      <select class="select w-full" [(ngModel)]="numbering_range_id">
+      <select
+        #numberingRange
+        class="select w-full"
+        [(ngModel)]="numbering_range_id"
+        (ngModelChange)="numbering_range_id.set(+numberingRange.value)"
+      >
         @if(numberingRanges()){ @for (range of numberingRanges(); track
         range.id) {
         <option [value]="range.id">
@@ -19,11 +24,15 @@
 
     <div class="flex flex-col gap-1.5">
       <label class="label">Metodo de pago</label>
-      <select class="select">
-        <option disabled selected>Pick a color</option>
-        <option>Crimson</option>
-        <option>Amber</option>
-        <option>Velvet</option>
+      <select
+        #paymentMethod
+        class="select w-full"
+        [(ngModel)]="payment_method_id"
+        (ngModelChange)="payment_method_id.set(+paymentMethod.value)"
+      >
+        @for (method of PAYMENT_METHODS; track method.code) {
+        <option [value]="method.code">{{ method.name }}</option>
+        }
       </select>
     </div>
   </fieldset>

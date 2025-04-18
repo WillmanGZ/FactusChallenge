@@ -1,0 +1,66 @@
+<fieldset
+  class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4 flex flex-col gap-4"
+>
+  <legend class="fieldset-legend">Información del cliente</legend>
+
+  <div class="flex flex-col gap-1.5">
+    <label class="label">Tipo de documento</label>
+    <select
+      #documentType
+      class="select w-full"
+      [(ngModel)]="document_type_id"
+      (ngModelChange)="document_type_id.set(+documentType.value)"
+    >
+      @for (type of documentTypes; track type.code) {
+      <option [value]="type.code">
+        {{ type.name }}
+      </option>
+      }
+    </select>
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label class="label">Identificación</label>
+    <input
+      #identificationInput="ngModel"
+      required
+      type="text"
+      inputmode="numeric"
+      pattern="[0-9]*"
+      class="input validator"
+      minlength="6"
+      maxlength="10"
+      title="Debe tener entre 6 y 10 dígitos"
+      [(ngModel)]="identification"
+      (ngModelChange)="identification.set(identificationInput.value)"
+    />
+    @if (identificationInput.invalid && identificationInput.touched &&
+    identificationInput.value) {
+    <p class="validator-hint">
+      Documento invalido, debe tener entre 6 y 10 dígitos
+    </p>
+    }
+  </div>
+
+  <div class="flex flex-col gap-1.5">
+    <label class="label">Dígito de verificación</label>
+    <input
+      #verDigInput="ngModel"
+      required
+      type="number"
+      class="input validator"
+      min="0"
+      max="9"
+      minlength="1"
+      maxlength="1"
+      title="Debe tener 1 dígito númerico"
+      [(ngModel)]="dv"
+      (ngModelChange)="dv.set(+verDigInput.value)"
+    />
+    @if(verDigInput.invalid && verDigInput.touched && verDigInput.value) {
+    <p class="validator-hint">
+      El dígito de verificación debe tener 1 dígito númerico
+    </p>
+    }
+  </div>
+</fieldset>

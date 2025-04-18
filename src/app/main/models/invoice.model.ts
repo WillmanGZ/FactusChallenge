@@ -1,3 +1,5 @@
+import { NumberingRange } from "./numbering-ranges.model";
+
 export interface InvoiceResponse {
   status: string;
   message: string;
@@ -189,12 +191,4 @@ export interface Item {
   withholding_taxes: any[];
 }
 
-export interface NumberingRange {
-  prefix: string;
-  from: number;
-  to: number;
-  resolution_number: string;
-  start_date: string;
-  end_date: string;
-  months: number;
-}
+

@@ -1,0 +1,30 @@
+<section>
+  <fieldset
+    class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4 flex flex-col gap-4"
+  >
+    <legend class="fieldset-legend">Información general de la factura</legend>
+
+    <div class="flex flex-col gap-1.5">
+      <label class="label">Rango de numeración</label>
+      <select class="select w-full" [(ngModel)]="numbering_range_id">
+        @if(numberingRanges()){ @for (range of numberingRanges(); track
+        range.id) {
+        <option [value]="range.id">
+          {{ range.document }} {{ range.prefix }} {{ range.from }} -
+          {{ range.to }}
+        </option>
+        } }
+      </select>
+    </div>
+
+    <div class="flex flex-col gap-1.5">
+      <label class="label">Metodo de pago</label>
+      <select class="select">
+        <option disabled selected>Pick a color</option>
+        <option>Crimson</option>
+        <option>Amber</option>
+        <option>Velvet</option>
+      </select>
+    </div>
+  </fieldset>
+</section>

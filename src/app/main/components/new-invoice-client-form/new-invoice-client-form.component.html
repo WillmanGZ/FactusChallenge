@@ -3,6 +3,7 @@
 >
   <legend class="fieldset-legend">Información del cliente</legend>
 
+  <!-- Document type -->
   <div class="flex flex-col gap-1.5">
     <label class="label">Tipo de documento</label>
     <select
@@ -19,6 +20,7 @@
     </select>
   </div>
 
+  <!-- Document -->
   <div class="flex flex-col gap-1.5">
     <label class="label">Identificación</label>
     <input
@@ -42,6 +44,7 @@
     }
   </div>
 
+  <!-- Verification digit -->
   <div class="flex flex-col gap-1.5">
     <label class="label">Dígito de verificación</label>
     <input
@@ -60,6 +63,74 @@
     @if(verDigInput.invalid && verDigInput.touched && verDigInput.value) {
     <p class="validator-hint">
       El dígito de verificación debe tener 1 dígito númerico
+    </p>
+    }
+  </div>
+
+  <!-- Name -->
+  <div class="flex flex-col gap-1.5">
+    <label class="label">Nombre/ Razon social</label>
+    <input
+      #nameInput="ngModel"
+      required
+      class="input validator"
+      title="Nombre del cliente o razón social de la empresa"
+      [(ngModel)]="name"
+      (ngModelChange)="name.set(nameInput.value)"
+    />
+    @if(nameInput.invalid && nameInput.touched && nameInput.value) {
+    <p class="validator-hint">Debe ingresar un nombre o una razón social</p>
+    }
+  </div>
+
+  <!-- Address -->
+  <div class="flex flex-col gap-1.5">
+    <label class="label">Dirección</label>
+    <input
+      #addressInput="ngModel"
+      required
+      class="input validator"
+      title="Dirección del cliente o de la empresa"
+      [(ngModel)]="address"
+      (ngModelChange)="address.set(addressInput.value)"
+    />
+    @if(addressInput.invalid && addressInput.touched && addressInput.value) {
+    <p class="validator-hint">Debe ingresar una direccion valida</p>
+    }
+  </div>
+
+  <!-- Email -->
+  <div class="flex flex-col gap-1.5">
+    <label class="label">Correo electrónico</label>
+    <input
+      #emailInput="ngModel"
+      required
+      class="input validator"
+      title="Dirección de correo electrónico"
+      [(ngModel)]="email"
+      (ngModelChange)="email.set(emailInput.value)"
+    />
+    @if(emailInput.invalid && emailInput.touched && emailInput.value) {
+    <p class="validator-hint">
+      Debes ingresar una dirección de correo electrónico
+    </p>
+    }
+  </div>
+
+  <!-- Telefono -->
+  <div class="flex flex-col gap-1.5">
+    <label class="label">Telefono</label>
+    <input
+      #telInput="ngModel"
+      required
+      class="input validator"
+      title="Numero telefonico"
+      [(ngModel)]="tel"
+      (ngModelChange)="tel.set(telInput.value)"
+    />
+    @if(telInput.invalid && telInput.touched && telInput.value) {
+    <p class="validator-hint">
+      Debes ingresar una dirección de correo electrónico
     </p>
     }
   </div>

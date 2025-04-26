@@ -13,4 +13,8 @@ export class NewInvoiceClientFormComponent {
   document_type_id = signal(3);
   identification = signal('');
   dv = signal<number | null>(null);
+  name = signal('');
+  address = signal('');
+  email = signal('');
+  tel = signal('');
 }

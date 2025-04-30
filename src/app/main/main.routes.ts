@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const mainRoutes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'invoice-history',
     pathMatch: 'full',
   },
   {
@@ -19,5 +19,9 @@ export const mainRoutes: Routes = [
       import('@main/pages/new-invoice-page/new-invoice-page.component').then(
         (m) => m.NewInvoicePageComponent
       ),
+  },
+  {
+    path: '**',
+    redirectTo: 'invoice-history',
   },
 ];

@@ -1,137 +1,124 @@
-<fieldset
-  class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4 flex flex-col gap-4"
->
-  <legend class="fieldset-legend">Información del cliente</legend>
+<form [formGroup]="myForm">
+  <fieldset
+    class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4 flex flex-col gap-4"
+  >
+    <legend class="fieldset-legend">Información del cliente</legend>
 
-  <!-- Document type -->
-  <div class="flex flex-col gap-1.5">
-    <label class="label">Tipo de documento</label>
-    <select
-      #documentType
-      class="select w-full"
-      [(ngModel)]="document_type_id"
-      (ngModelChange)="document_type_id.set(+documentType.value)"
-    >
-      @for (type of documentTypes; track type.code) {
-      <option [value]="type.code">
-        {{ type.name }}
-      </option>
+    <!-- Document type -->
+    <div class="flex flex-col gap-1.5">
+      <label class="label">Tipo de documento</label>
+      <select
+        #documentType
+        class="select w-full"
+        formControlName="documentType"
+        (change)="document_type_id.set(+documentType.value)"
+      >
+        @for (type of documentTypes; track type.code) {
+        <option [value]="type.code">
+          {{ type.name }}
+        </option>
+        }
+      </select>
+    </div>
+
+    <!-- Document -->
+    <div class="flex flex-col gap-1.5">
+      <label class="label">Identificación</label>
+      <input
+        #document
+        class="input w-full"
+        formControlName="identification"
+        (change)="identification.set(+document.value)"
+      />
+      @if (myForm.controls['identification'].invalid &&
+      myForm.controls['identification'].touched) {
+      <p class="validator-hint text-error">
+        Documento invalido, debe tener entre 6 y 10 dígitos
+      </p>
       }
-    </select>
-  </div>
+    </div>
 
-  <!-- Document -->
-  <div class="flex flex-col gap-1.5">
-    <label class="label">Identificación</label>
-    <input
-      #identificationInput="ngModel"
-      required
-      type="text"
-      inputmode="numeric"
-      pattern="[0-9]*"
-      class="input validator"
-      minlength="6"
-      maxlength="10"
-      title="Debe tener entre 6 y 10 dígitos"
-      [(ngModel)]="identification"
-      (ngModelChange)="identification.set(identificationInput.value)"
-    />
-    @if (identificationInput.invalid && identificationInput.touched &&
-    identificationInput.value) {
-    <p class="validator-hint">
-      Documento invalido, debe tener entre 6 y 10 dígitos
-    </p>
-    }
-  </div>
+    <!-- Verification digit -->
+    <div class="flex flex-col gap-1.5">
+      <label class="label">Dígito de verificación</label>
+      <input
+        #dvInput
+        class="input w-full"
+        formControlName="dv"
+        (change)="dv.set(+dvInput.value)"
+      />
+      @if(myForm.controls['dv'].invalid && myForm.controls['dv'].touched) {
+      <p class="validator-hint text-error">
+        El dígito de verificación debe tener 1 dígito númerico
+      </p>
+      }
+    </div>
 
-  <!-- Verification digit -->
-  <div class="flex flex-col gap-1.5">
-    <label class="label">Dígito de verificación</label>
-    <input
-      #verDigInput="ngModel"
-      required
-      type="number"
-      class="input validator"
-      min="0"
-      max="9"
-      minlength="1"
-      maxlength="1"
-      title="Debe tener 1 dígito númerico"
-      [(ngModel)]="dv"
-      (ngModelChange)="dv.set(+verDigInput.value)"
-    />
-    @if(verDigInput.invalid && verDigInput.touched && verDigInput.value) {
-    <p class="validator-hint">
-      El dígito de verificación debe tener 1 dígito númerico
-    </p>
-    }
-  </div>
+    <!-- Name -->
+    <div class="flex flex-col gap-1.5">
+      <label class="label">Nombre/ Razon social</label>
+      <input
+        #nameInput
+        class="input w-full"
+        formControlName="name"
+        (change)="dv.set(+dvInput.value)"
+      />
+      @if(myForm.controls['name'].invalid && myForm.controls['name'].touched) {
+      <p class="validator-hint text-error">
+        Debe ingresar un nombre o una razón social de minimo 3 letras
+      </p>
+      }
+    </div>
 
-  <!-- Name -->
-  <div class="flex flex-col gap-1.5">
-    <label class="label">Nombre/ Razon social</label>
-    <input
-      #nameInput="ngModel"
-      required
-      class="input validator"
-      title="Nombre del cliente o razón social de la empresa"
-      [(ngModel)]="name"
-      (ngModelChange)="name.set(nameInput.value)"
-    />
-    @if(nameInput.invalid && nameInput.touched && nameInput.value) {
-    <p class="validator-hint">Debe ingresar un nombre o una razón social</p>
-    }
-  </div>
+    <!-- Address -->
+    <div class="flex flex-col gap-1.5">
+      <label class="label">Dirección</label>
+      <input
+        #addressInput
+        class="input w-full"
+        formControlName="address"
+        (change)="address.set(addressInput.value)"
+      />
+      @if(myForm.controls['address'].invalid &&
+      myForm.controls['address'].touched) {
+      <p class="validator-hint text-error">
+        Debe ingresar una direccion valida
+      </p>
+      }
+    </div>
 
-  <!-- Address -->
-  <div class="flex flex-col gap-1.5">
-    <label class="label">Dirección</label>
-    <input
-      #addressInput="ngModel"
-      required
-      class="input validator"
-      title="Dirección del cliente o de la empresa"
-      [(ngModel)]="address"
-      (ngModelChange)="address.set(addressInput.value)"
-    />
-    @if(addressInput.invalid && addressInput.touched && addressInput.value) {
-    <p class="validator-hint">Debe ingresar una direccion valida</p>
-    }
-  </div>
+    <!-- Email -->
+    <div class="flex flex-col gap-1.5">
+      <label class="label">Correo electrónico</label>
+      <input
+        #emailInput
+        type="email"
+        class="input w-full"
+        formControlName="email"
+        (change)="email.set(emailInput.value)"
+      />
+      @if(myForm.controls['email'].invalid && myForm.controls['email'].touched)
+      {
+      <p class="validator-hint text-error">
+        Debes ingresar una dirección de correo electrónico valida
+      </p>
+      }
+    </div>
 
-  <!-- Email -->
-  <div class="flex flex-col gap-1.5">
-    <label class="label">Correo electrónico</label>
-    <input
-      #emailInput="ngModel"
-      required
-      class="input validator"
-      title="Dirección de correo electrónico"
-      [(ngModel)]="email"
-      (ngModelChange)="email.set(emailInput.value)"
-    />
-    @if(emailInput.invalid && emailInput.touched && emailInput.value) {
-    <p class="validator-hint">
-      Debes ingresar una dirección de correo electrónico
-    </p>
-    }
-  </div>
-
-  <!-- Telefono -->
-  <div class="flex flex-col gap-1.5">
-    <label class="label">Telefono</label>
-    <input
-      #telInput="ngModel"
-      required
-      class="input validator"
-      title="Numero telefonico"
-      [(ngModel)]="tel"
-      (ngModelChange)="tel.set(telInput.value)"
-    />
-    @if(telInput.invalid && telInput.touched && telInput.value) {
-    <p class="validator-hint">
-      Debes ingresar una dirección de correo electrónico
-    </p>
-    }
-  </div>
-</fieldset>
+    <!-- Telefono -->
+    <div class="flex flex-col gap-1.5">
+      <label class="label">Telefono</label>
+      <input
+        #telInput
+        class="input w-full"
+        formControlName="tel"
+        (change)="tel.set(telInput.value)"
+      />
+      @if(myForm.controls['tel'].invalid && myForm.controls['tel'].touched) {
+      <p class="validator-hint text-error">
+        Debes ingresar un número de teléfono válido
+      </p>
+      }
+    </div>
+  </fieldset>
+</form>
